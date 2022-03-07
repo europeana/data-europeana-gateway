@@ -17,9 +17,8 @@ vars='$ANNOTATION_API_HOST
 
 envsubst "${vars}" < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf
 
-if [ -z "$@" ]
-then
-      echo "No input args. Running default nginx command"
+if [ -z "$1" ]; then
+      echo "No container params. Running default nginx command"
       nginx
 else
       exec "$@"
