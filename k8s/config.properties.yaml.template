@@ -1,0 +1,20 @@
+# To configure deployment,
+# - copy this file to "config-map.properties.yaml"
+# - add config vars
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+data:
+  ANNOTATION_API_HOST: 
+  ENTITY_API_HOST: 
+  ENTITY_MANAGEMENT_HOST: 
+  FULLTEXT_API_HOST: 
+  MANIFEST_API_HOST: 
+  OAI_RECORD_HOST: 
+  RECOMMENDATION_API_HOST: 
+  RESOLVER_ADDRESS: 
+  ROOT_REDIRECT_URL: 
+  SEARCH_API_HOST: 
+  SET_API_HOST: 
+  THUMBNAIL_API_HOST: 

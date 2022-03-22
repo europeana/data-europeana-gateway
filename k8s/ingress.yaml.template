@@ -1,0 +1,27 @@
+# Ingress for routing traffic on IBM cloud.
+# To configure,
+#    - copy this file to "ingress.properties.yaml"
+#    - replace HOSTNAME and SECRET_NAME placeholders with correct values
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-gateway-ingress
+  annotations:
+    cert-manager.io/issuer: letsencrypt-production
+spec:
+  ingressClassName: public-iks-k8s-nginx
+  tls:
+    - hosts:
+        - HOSTNAME
+      secretName: SECRET_NAME
+  rules:
+    - host: HOSTNAME
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway-cluster-ip-service
+                port:
+                  number: 80
