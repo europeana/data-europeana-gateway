@@ -1,6 +1,6 @@
-# Europeana API Gateway
+# Data-Europeana Gateway
 
-Gateway for Europeana APIs using [NGINX on CloudFoundry](https://docs.cloudfoundry.org/buildpacks/nginx/).
+Gateway to handle redirects to data.europeana.eu using [NGINX on CloudFoundry](https://docs.cloudfoundry.org/buildpacks/nginx/).
 
 ## Usage
 
@@ -8,7 +8,7 @@ Gateway for Europeana APIs using [NGINX on CloudFoundry](https://docs.cloudfound
 
 1. Copy cloud-foundry/manifest.example.yml to manifest.yml
 2. Set all environment variable values in manifest.yml
-3. Deploy to Cloud Foundry: `cf push api-gateway -f manifest.yml`
+3. Deploy to Cloud Foundry: `cf push data-europeana-gateway -f manifest.yml`
 
 ### Docker
 
