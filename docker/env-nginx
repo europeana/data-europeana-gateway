@@ -4,16 +4,13 @@
 
 vars='$ANNOTATION_API_HOST
       $ENTITY_API_HOST
-      $ENTITY_MANAGEMENT_HOST
       $FULLTEXT_API_HOST
-      $RESOLVER_ADDRESS
-      $ROOT_REDIRECT_URL
-      $SEARCH_API_HOST
+      $PRESENTATION_API_HOST
+      $RECORD_API_HOST
       $SET_API_HOST
-      $OAI_RECORD_HOST
-      $MANIFEST_API_HOST
-      $THUMBNAIL_API_HOST
-      $RECOMMENDATION_API_HOST'
+      $ENTITY_PORTAL_HOST
+      $RECORD_PORTAL_HOST
+      $SET_PORTAL_HOST'
 
 envsubst "${vars}" < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf
 
