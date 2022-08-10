@@ -1,5 +1,5 @@
 .dockerignore
-.env.docker
+.env
 .git
 .gitignore
 docker

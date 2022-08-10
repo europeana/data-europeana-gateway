@@ -4,17 +4,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: api-gateway-config
+  name: data-europeana-gateway-config
 data:
-  ANNOTATION_API_HOST: 
-  ENTITY_API_HOST: 
-  ENTITY_MANAGEMENT_HOST: 
-  FULLTEXT_API_HOST: 
-  MANIFEST_API_HOST: 
-  OAI_RECORD_HOST: 
-  RECOMMENDATION_API_HOST: 
-  RESOLVER_ADDRESS: 
-  ROOT_REDIRECT_URL: 
-  SEARCH_API_HOST: 
-  SET_API_HOST: 
-  THUMBNAIL_API_HOST: 
+  ANNOTATION_API_HOST: api.europeana.eu/annotation
+  ENTITY_API_HOST: api.europeana.eu/entity
+  FULLTEXT_API_HOST: api.europeana.eu/fulltext
+  PRESENTATION_API_HOST: iiif.europeana.eu/presentation
+  RECORD_API_HOST: api.europeana.eu/record
+  SET_API_HOST: api.europeana.eu/set
+  ENTITY_PORTAL_HOST: www.europeana.eu/collections
+  RECORD_PORTAL_HOST: www.europeana.eu/item
+  SET_PORTAL_HOST: www.europeana.eu/set

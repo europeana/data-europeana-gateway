@@ -2,15 +2,13 @@
 # version of buildpack with nginx 1.15.8
 buildpack: https://github.com/cloudfoundry/nginx-buildpack.git#v1.0.8
 env:
-  ANNOTATION_API_HOST: annotation-api.example.org
-  ENTITY_API_HOST: entity-api.example.org
-  FULLTEXT_API_HOST: fulltext.example.org
-  RESOLVER_ADDRESS: "nameserver1.example.org nameserver2.example.org"
-  ROOT_REDIRECT_URL: https://docs.example.org/apis
-  SEARCH_API_HOST: search-api.example.org
-  SET_API_HOST: set-api.example.org
-  THUMBNAIL_API_HOST: thumbnail-api.example.org
-  MANIFEST_API_HOST: manifest-api.example.org
-  OAI_RECORD_HOST: oai-pmh.example.org
-  RECOMMENDATION_API_HOST: recommendation-api.example.org
+  ANNOTATION_API_HOST: api.europeana.eu/annotation
+  ENTITY_API_HOST: api.europeana.eu/entity
+  FULLTEXT_API_HOST: api.europeana.eu/fulltext
+  PRESENTATION_API_HOST: iiif.europeana.eu/presentation
+  RECORD_API_HOST: api.europeana.eu/record
+  SET_API_HOST: api.europeana.eu/set
+  ENTITY_PORTAL_HOST: www.europeana.eu/collections
+  RECORD_PORTAL_HOST: www.europeana.eu/item
+  SET_PORTAL_HOST: www.europeana.eu/set
  

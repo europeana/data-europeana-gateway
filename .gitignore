@@ -1,6 +1,6 @@
 /manifest.yml
 .env
-.env.*
+.env
 !.env.example
 
 #IntelliJ project files

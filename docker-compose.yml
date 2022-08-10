@@ -1,9 +1,9 @@
 version: "3"
 services:
   nginx:
-    image: api-gateway
+    image: data-europeana-gateway
     build:
       context: .
-    env_file: .env.docker
+    env_file: .env
     ports:
       - "8080:80"
