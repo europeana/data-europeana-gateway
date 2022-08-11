@@ -12,7 +12,7 @@ Gateway to handle redirects to data.europeana.eu using [NGINX on CloudFoundry](h
 
 ### Docker
 
-1. Copy docker/.env.example to .env
+1. Copy docker/.env.example to .env.docker
 2. Run with Docker Compose: `docker-compose up`
 3. The API Gateway will be available at http://localhost:8080/
 
