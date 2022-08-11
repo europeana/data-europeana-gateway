@@ -4,6 +4,6 @@ services:
     image: data-europeana-gateway
     build:
       context: .
-    env_file: .env
+    env_file: .env.docker
     ports:
       - "8080:80"
