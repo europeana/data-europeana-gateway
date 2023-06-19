@@ -12,16 +12,16 @@ spec:
   ingressClassName: public-iks-k8s-nginx
   tls:
     - hosts:
-        - HOSTNAME
-      secretName: SECRET_NAME
+        - ${K8S_HOSTNAME}
+      secretName: ${K8S_HOSTNAME_SECRET}
   rules:
-    - host: HOSTNAME
+    - host: ${K8S_HOSTNAME}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: data-europeana-gateway-cluster-ip-service
+                name: data-europeana-gateway-service
                 port:
                   number: 80

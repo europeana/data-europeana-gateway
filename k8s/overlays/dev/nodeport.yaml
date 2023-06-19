@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: data-europeana-gateway-node-port
+  name: data-europeana-gateway-service
 spec:
   type: NodePort
   ports:

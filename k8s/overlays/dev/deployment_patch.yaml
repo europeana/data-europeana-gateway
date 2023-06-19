@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-europeana-gateway-deployment
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: data-europeana-gateway
+          # required to use local image
+          imagePullPolicy: Never

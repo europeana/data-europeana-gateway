@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-europeana-gateway-deployment
+spec:
+# selector.matchLabels provided via Kustomize
+  template:
+    spec:
+      containers:
+        - name: data-europeana-gateway
+          image: europeana/data-europeana-gateway
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /nginx-health
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /nginx-health
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: data-europeana-gateway-config
+

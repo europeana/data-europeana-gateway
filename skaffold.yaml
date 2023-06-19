@@ -4,7 +4,7 @@ metadata:
   name: data-europeana-gateway
 build:
   artifacts:
-  - image: europeana/api-gateway
+  - image: europeana/data-europeana-gateway
     docker:
       dockerfile: Dockerfile
 deploy:

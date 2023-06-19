@@ -1,0 +1,8 @@
+resources:
+  - deployment.yaml
+
+# expects file to be in the same directory
+configMapGenerator:
+  - name: data-europeana-gateway-config
+    envs:
+      - .env

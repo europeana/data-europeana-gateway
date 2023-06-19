@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Replace the CF buildpack specific templating syntax with env var syntax
-sed -r -i 's/\{\{port\}\}/80/g' /etc/nginx/nginx.template.conf
-sed -r -i 's/\{\{env "([^"]*)"\}\}/\$\1/g' /etc/nginx/nginx.template.conf
-
-# Do include the redirect port in the Docker container
-sed -r -i 's/port_in_redirect off/port_in_redirect on/g' /etc/nginx/nginx.template.conf
