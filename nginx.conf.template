@@ -1,4 +1,5 @@
-# Based on: https://github.com/europeana/portal-apache-web/blob/master/conf/vhosts/data.europeana.eu.conf
+# Config based on api-gateway's nginx.conf
+# Based on: https://raw.githubusercontent.com/cloudfoundry/nginx-buildpack/v1.0.1/fixtures/mainline/nginx.conf
 worker_processes auto;
 
 # see https://github.com/cloudfoundry/nginx-buildpack/blob/master/fixtures/mainline/nginx.conf#L2
@@ -15,11 +16,6 @@ events {
 http {
     include nginx.conf.d/*.conf;
     charset utf-8;
-    # EA-2236: Disable access logs
-    access_log off;
-    default_type application/octet-stream;
-    include mime.types;
-    sendfile on;
 #     map_hash_max_size 64;
     map_hash_bucket_size 128;
 
@@ -38,6 +34,11 @@ http {
       "text/html|application/xhtml\+xml"  0;
       default                             1;
     }
+    # EA-2236: Disable access logs
+    access_log off;
+    default_type application/octet-stream;
+    include mime.types;
+    sendfile on;
 
     tcp_nodelay on;
     tcp_nopush on;
@@ -46,24 +47,25 @@ http {
 
 
     server {
+
         server_name {{env "DATA_HOST"}};
-        listen {{port}};
-        # TODO what should this be set to?
-#         root "/usr/local/apache2/htdocs/data.europeana.eu";
-        root public;
+        listen 80;
+        root /usr/share/nginx/html;
+        index index.html;
 
-        # Enforce SSL
-#         if ($http_x_forwarded_proto != "https") {
-#             return 301 https://$host$request_uri;
-#         }
+        # HTTPS enforcement should be done within Kubernetes ingress
 
-        # CORS
-        add_header "Access-Control-Allow-Origin" "*";
-        add_header "Access-Control-Allow-Credentials" "true";
-        add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD";
-        add_header "Access-Control-Max-Age" "600";
-        add_header "Access-Control-Expose-Headers" "Location";
-        add_header "Access-Control-Allow-Headers" "x-requested-with, Content-Type, origin, authorization, accept, client-security-token";
+        # Used by Kubernetes health checks
+        location /nginx-health {
+            default_type application/json;
+            return 200 '{"status":"healthy"}';
+        }
+
+#         resolver ${RESOLVER_SETTINGS};
+
+        add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
+
+        include nginx.conf.d/*.conf;
 
         # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
         if ($request_method = 'OPTIONS') {
@@ -170,6 +172,14 @@ http {
             # otherwise, unless request is for a file, forward to pro
             try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
         }
+
+        # CORS
+        add_header "Access-Control-Allow-Origin" "*";
+        add_header "Access-Control-Allow-Credentials" "true";
+        add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD";
+        add_header "Access-Control-Max-Age" "600";
+        add_header "Access-Control-Expose-Headers" "Location";
+        add_header "Access-Control-Allow-Headers" "x-requested-with, Content-Type, origin, authorization, accept, client-security-token";
 
     } # server
 } # http
