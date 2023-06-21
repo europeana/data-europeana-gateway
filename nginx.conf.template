@@ -89,11 +89,11 @@ http {
         location /item/ {
           # no Apikey
           if ($include_apikey = 0){
-            rewrite /item/(.*) {{env "RECORD_PORTAL_HOST"}}/$1 redirect;
+            rewrite /item/(.*) ${RECORD_PORTAL_HOST}/$1 redirect;
           }
           # yes Apikey
           if ($include_apikey = 1){
-            rewrite /item/(.*) {{env "RECORD_API_HOST"}}/$1.$format?wskey={{env "API_KEY"}} redirect;
+            rewrite /item/(.*) ${RECORD_API_HOST}/$1.$format?wskey=${API_KEY} redirect;
           }
         }
 
@@ -108,8 +108,8 @@ http {
         # Annotations                          #
         ########################################
         location ~ ^/annotation/ {
-          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ {{env "PRESENTATION_API_HOST"}}/$1/$2/anno/$3 redirect;
-          rewrite ^/annotation/(.*) {{env "ANNOTATION_API_HOST"}}/$1 redirect;
+          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ ${PRESENTATION_API_HOST}/$1/$2/anno/$3 redirect;
+          rewrite ^/annotation/(.*) ${ANNOTATION_API_HOST}/$1 redirect;
         }
 
         ########################################
@@ -123,15 +123,15 @@ http {
         location ~ /(agent|place|concept|timespan|organization)/ {
           # no Apikey
           if ($include_apikey = 0){
-            rewrite /agent/(.*) {{env "ENTITY_PORTAL_HOST"}}/person/$1 redirect;
-            rewrite /concept/(.*) {{env "ENTITY_PORTAL_HOST"}}/topic/$1 redirect;
-            rewrite /timespan/(.*) {{env "ENTITY_PORTAL_HOST"}}/time/$1 redirect;
-            rewrite /organization/(.*) {{env "ENTITY_PORTAL_HOST"}}/organization/$1 redirect;
+            rewrite /agent/(.*) ${ENTITY_PORTAL_HOST}/person/$1 redirect;
+            rewrite /concept/(.*) ${ENTITY_PORTAL_HOST}/topic/$1 redirect;
+            rewrite /timespan/(.*) ${ENTITY_PORTAL_HOST}/time/$1 redirect;
+            rewrite /organization/(.*) ${ENTITY_PORTAL_HOST}/organization/$1 redirect;
           }
 
           # with Apikey
           if ($include_apikey = 1){
-            rewrite /(agent|place|concept|timespan|organization)/(.*) {{env "ENTITY_API_HOST"}}/$1/$2?wskey={{env "ENTITY_API_KEY"}} redirect;
+            rewrite /(agent|place|concept|timespan|organization)/(.*) ${ENTITY_API_HOST}/$1/$2?wskey=${ENTITY_API_KEY} redirect;
           }
         }
 
@@ -141,13 +141,13 @@ http {
         location /set/ {
           # Pas des clés d'Api
           if ($include_apikey = 0){
-            rewrite /set/(.*) {{env "SET_PORTAL_HOST"}}/$1 redirect;
+            rewrite /set/(.*) ${SET_PORTAL_HOST}/$1 redirect;
           }
 
           # Clé d'Api
           if ($include_apikey = 1){
-            rewrite /set/(.*) {{env "SET_API_HOST"}}/$1.$format?wskey={{env "ENTITY_API_KEY"}} redirect;
-            rewrite /set/(.*) {{env "SET_API_HOST"}}/$1.$format?wskey={{env "ENTITY_API_KEY"}} redirect;
+            rewrite /set/(.*) ${SET_API_HOST}/$1.$format?wskey=${ENTITY_API_KEY} redirect;
+            rewrite /set/(.*) ${SET_API_HOST}/$1.$format?wskey=${ENTITY_API_KEY} redirect;
           }
         }
 
@@ -155,7 +155,7 @@ http {
         # Fulltext                             #
         ########################################
         location ~ ^/(fulltext|presentation)/ {
-          rewrite ^/fulltext/(.+?)/(.+?)/(.+?)$ {{env "FULLTEXT_API_HOST"}}/$1/$2/$3 redirect;
+          rewrite ^/fulltext/(.+?)/(.+?)/(.+?)$ ${FULLTEXT_API_HOST}/$1/$2/$3 redirect;
         }
 
         ########################################
@@ -164,7 +164,7 @@ http {
 
         # if the void is well-known
         location /.well-known/void/ {
-          return 302 {{env "DATA_HOST"}};
+          return 302 ${DATA_HOST};
         }
 
         location /sparql/ {
