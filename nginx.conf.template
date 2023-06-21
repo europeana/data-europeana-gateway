@@ -70,7 +70,7 @@ http {
             return 200 '{"status":"healthy"}';
         }
 
-#         resolver ${RESOLVER_SETTINGS};
+        resolver ${RESOLVER_SETTINGS};
 
         add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
 
