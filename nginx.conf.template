@@ -14,8 +14,28 @@ events {
 }
 
 http {
-    include nginx.conf.d/*.conf;
     charset utf-8;
+    default_type application/octet-stream;
+    include mime.types;
+    sendfile on;
+    # EA-2236: Disable access logs
+    access_log off;
+
+    tcp_nodelay on;
+    tcp_nopush on;
+    keepalive_timeout 90s;
+    keepalive_requests 100;
+    types_hash_max_size 2048;
+    port_in_redirect off; # Ensure that redirects don't include the internal container PORT - 8080
+
+    # Override some buffer limitations, will prevent DDOS too.
+    #
+    client_body_buffer_size 10K;
+    client_header_buffer_size 1k;
+    client_max_body_size 8m;
+    large_client_header_buffers 2 1k;
+
+    include nginx.conf.d/*.conf;
 #     map_hash_max_size 64;
     map_hash_bucket_size 128;
 
@@ -34,21 +54,10 @@ http {
       "text/html|application/xhtml\+xml"  0;
       default                             1;
     }
-    # EA-2236: Disable access logs
-    access_log off;
-    default_type application/octet-stream;
-    include mime.types;
-    sendfile on;
-
-    tcp_nodelay on;
-    tcp_nopush on;
-    keepalive_timeout 30;
-    port_in_redirect off; # Ensure that redirects don't include the internal container PORT - 8080
 
 
     server {
 
-        server_name {{env "DATA_HOST"}};
         listen 80;
         root /usr/share/nginx/html;
         index index.html;
