@@ -47,21 +47,6 @@ http {
 
 
     server {
-        # "upstream" servers do not use resolver settings by default (paid option),
-        # so we proxy directly to the urls
-        set $annotation_api ${ANNOTATION_API_HOST};
-        set $entity_api ${ENTITY_API_HOST};
-        set $fulltext_api ${FULLTEXT_API_HOST};
-        set $presentation_api ${PRESENTATION_API_HOST};
-        set $record_api ${RECORD_API_HOST};
-        set $set_api ${SET_API_HOST};
-        set $entity_portal ${ENTITY_PORTAL_HOST};
-        set $record_portal ${RECORD_PORTAL_HOST};
-        set $set_portal ${SET_PORTAL_HOST};
-        set $entity_management ${ENTITY_MANAGEMENT_HOST};
-        set $api_key ${API_KEY};
-        set $entity_api_key ${ENTITY_API_KEY};
-        set $data_host ${DATA_HOST};
 
         server_name {{env "DATA_HOST"}};
         listen 80;
@@ -70,14 +55,13 @@ http {
 
         # HTTPS enforcement should be done within Kubernetes ingress
 
-
         # Used by Kubernetes health checks
         location /nginx-health {
             default_type application/json;
             return 200 '{"status":"healthy"}';
         }
 
-        resolver ${RESOLVER_SETTINGS};
+#         resolver ${RESOLVER_SETTINGS};
 
         add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
 
@@ -188,7 +172,6 @@ http {
             # otherwise, unless request is for a file, forward to pro
             try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
         }
-
 
         # CORS
         add_header "Access-Control-Allow-Origin" "*";
