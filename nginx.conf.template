@@ -108,9 +108,9 @@ http {
         # Annotations                          #
         ########################################
         location ~ ^/annotation/ {
-          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ ${PRESENTATION_API_HOST}/$1/$2/anno/$3 last;
-          rewrite ^/annotation/(.*) ${ANNOTATION_API_HOST}/$1 last;
-          return 303;
+          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ ${PRESENTATION_API_HOST}/$1/$2/anno/$3 redirect last;
+          rewrite ^/annotation/(.*) ${ANNOTATION_API_HOST}/$1 redirect last;
+#           return 303;
         }
 
         ########################################
