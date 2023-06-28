@@ -107,11 +107,19 @@ http {
         ########################################
         # Annotations                          #
         ########################################
-        location ~ ^/annotation/ {
-          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ ${PRESENTATION_API_HOST}/$1/$2/anno/$3 redirect last;
-          rewrite ^/annotation/(.*) ${ANNOTATION_API_HOST}/$1 redirect last;
-#           return 303;
+        location ~ ^/annotation/(.+?)/(.+?)/(.+?)$ {
+            return 303 ${PRESENTATION_API_HOST}/$1/$2/anno/$3;
         }
+
+        location ~ ^/annotation/(.*)$ {
+            return 303 ${ANNOTATION_API_HOST}/$1;
+        }
+
+#         location ~ ^/annotation/ {
+#           rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ ${PRESENTATION_API_HOST}/$1/$2/anno/$3 redirect last;
+#           rewrite ^/annotation/(.*) ${ANNOTATION_API_HOST}/$1 redirect last;
+#           return 303;
+#         }
 
         ########################################
         # Entities                             #
