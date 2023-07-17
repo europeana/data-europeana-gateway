@@ -1,80 +1,81 @@
-# Config based on api-gateway's nginx.conf
-# Based on: https://raw.githubusercontent.com/cloudfoundry/nginx-buildpack/v1.0.1/fixtures/mainline/nginx.conf
-worker_processes auto;
 
-# see https://github.com/cloudfoundry/nginx-buildpack/blob/master/fixtures/mainline/nginx.conf#L2
-daemon off;
+#user  nobody;
+worker_processes  1;
 
-error_log stderr warn;
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
 
 events {
-    use epoll;
-    worker_connections 1024;
-    multi_accept on;
+    worker_connections  1024;
 }
 
+
 http {
+    include       mime.types;
+    include nginx.conf.d/*.conf;
+    default_type  application/octet-stream;
+
     charset utf-8;
-    default_type application/octet-stream;
-    include mime.types;
-    sendfile on;
     # EA-2236: Disable access logs
     access_log off;
-
-    tcp_nodelay on;
-    tcp_nopush on;
-    keepalive_timeout 90s;
-    keepalive_requests 100;
-    types_hash_max_size 2048;
-    port_in_redirect off; # Ensure that redirects don't include the internal container PORT - 8080
-
-    # Override some buffer limitations, will prevent DDOS too.
-    #
-    client_body_buffer_size 10K;
-    client_header_buffer_size 1k;
-    client_max_body_size 8m;
-    large_client_header_buffers 2 1k;
-
-    include nginx.conf.d/*.conf;
+    sendfile on;
 #     map_hash_max_size 64;
     map_hash_bucket_size 128;
 
     map $http_accept $format {
-      "text/html|application/xhtml\+xml"                      "html";
-      "application/rdf\+xml|rdf/xml|application/xml|text/xml" "rdf";
-      "application/json"                                      "json";
-      "application/ld\+json"                                  "jsonld";
-      "text/turtle|application/turtle|application/x-turtle"   "ttl";
-      "text/n3|text/rdf\+n3|application/n3"                   "n3";
-      "application/n-triples|application/ntriples|text/nt"    "nt";
+      "~*(text/html|application/xhtml\+xml)"                      "html";
+      "~*(application/rdf\+xml|rdf/xml|application/xml|text/xml)" "rdf";
+      "~*(application/json)"                                      "json";
+      "~*(application/ld\+json)"                                  "jsonld";
+      "~*(text/turtle|application/turtle|application/x-turtle)"   "ttl";
+      "~*(text/n3|text/rdf\+n3|application/n3)"                   "n3";
+      "~*(application/n-triples|application/ntriples|text/nt)"    "nt";
     }
 
     # makes configuring record-api a lot easier
     map $http_accept $include_apikey {
-      "text/html|application/xhtml\+xml"  0;
-      default                             1;
+        "~*(text/html|application/xhtml\+xml)"   0;
+        default                                  1;
     }
 
+    tcp_nodelay on;
+    tcp_nopush on;
+    keepalive_timeout 30;
+    port_in_redirect off; # Ensure that redirects don't include the internal container PORT - 8080
+
+    #gzip  on;
 
     server {
-
         listen 80;
-        root public;
+        include nginx.conf.d/*.conf;
+
+        # "upstream" servers do not use resolver settings by default (paid option),
+        # so we proxy directly to the urls
+        set $annotation_api ${ANNOTATION_API_HOST};
+        set $entity_api ${ENTITY_API_HOST};
+        set $set_api ${SET_API_HOST};
+        set $fulltext_api ${FULLTEXT_API_HOST};
+        set $presentation_api ${PRESENTATION_API_HOST};
+        set $record_api ${RECORD_API_HOST};
+        set $entity_portal ${ENTITY_PORTAL_HOST};
+        set $record_portal ${RECORD_PORTAL_HOST};
+        set $set_portal ${SET_PORTAL_HOST};
+        set $apikey ${API_KEY};
+        set $entity_apikey ${ENTITY_API_KEY};
+
+        server_name ${DATA_HOST};
+
+        root /usr/share/nginx/html;
         index index.html;
-
-        # HTTPS enforcement should be done within Kubernetes ingress
-
-        # Used by Kubernetes health checks
-        location /nginx-health {
-            default_type application/json;
-            return 200 '{"status":"healthy"}';
-        }
 
         resolver ${RESOLVER_SETTINGS};
 
         add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
 
-        include nginx.conf.d/*.conf;
 
         # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
         if ($request_method = 'OPTIONS') {
@@ -84,22 +85,44 @@ http {
         ########################################
         # Negotiation for Record API           #
         ########################################
-        rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /item/$2 ;
 
-        location /item/ {
-          # no Apikey
-          if ($include_apikey = 0){
-            rewrite /item/(.*) ${RECORD_PORTAL_HOST}/$1 redirect;
+        rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $scheme://$host:$server_port/item/$2 redirect;
+
+        location /item {
+          # HTML
+          if ($format = "html"){
+            rewrite /(.*) $record_portal/$1 redirect;
           }
-          # yes Apikey
-          if ($include_apikey = 1){
-            rewrite /item/(.*) ${RECORD_API_HOST}/$1.$format?wskey=${API_KEY} redirect;
+          # RDF
+          if ($format = "rdf"){
+            rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $record_api/$2.rdf?wskey=$apikey redirect;
           }
-        }
+          # JSON
+          if ($format = "json"){
+            rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $record_api/$2.json?wskey=$apikey redirect;
+          }
+          # JSON-LD
+          if ($format = "jsonld"){
+            rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $record_api/$2.jsonld?wskey=$apikey redirect;
+          }
+          # Turtle
+          if ($format = "ttl"){
+            rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $record_api/$2.ttl?wskey=$apikey redirect;
+          }
+          # N3
+          if ($format = "n3"){
+            rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $record_api/$2.n3?wskey=$apikey redirect;
+          }
+          # N-Triples
+          if ($format = "nt"){
+            rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) $record_api/$2.nt?wskey=$apikey redirect;
+          }
+       }
 
         ########################################
         # Negotiation for OpenSKOS             #
         ########################################
+
         location ~ /concept/(loc|soundgenres) {
           return 301 https://$host$request_uri.xml;
         }
@@ -107,40 +130,29 @@ http {
         ########################################
         # Annotations                          #
         ########################################
-#         location ~ ^/annotation/(.+?)/(.+?)/(.+?)$ {
-#             return 303 ${PRESENTATION_API_HOST}/$1/$2/anno/$3;
-#         }
-#
-#         location ~ ^/annotation/(.*)$ {
-#             return 303 ${ANNOTATION_API_HOST}/$1;
-#         }
-
-        location ~ ^/annotation/ {
-          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ ${PRESENTATION_API_HOST}/$1/$2/anno/$3 last;
-          rewrite ^/annotation/(.*) ${ANNOTATION_API_HOST}/$1 last;
-          return 303;
-        }
+        rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ https://iiif.europeana.eu/presentation/$1/$2/anno/$3 redirect;
+        rewrite ^/annotation/(.*) https://api.europeana.eu/annotation/$1 redirect;
 
         ########################################
         # Entities                             #
         ########################################
 
         location ~ /(agent|place|concept|timespan|organization)/base/ {
-            rewrite /(agent|place|concept|timespan|organization)/base/(.*) /$1/$2 permanent;
+            rewrite /(agent|place|concept|timespan|organization)/base/(.*) $scheme://$host:$server_port/$1/$2 permanent;
         }
 
         location ~ /(agent|place|concept|timespan|organization)/ {
           # no Apikey
           if ($include_apikey = 0){
-            rewrite /agent/(.*) ${ENTITY_PORTAL_HOST}/person/$1 redirect;
-            rewrite /concept/(.*) ${ENTITY_PORTAL_HOST}/topic/$1 redirect;
-            rewrite /timespan/(.*) ${ENTITY_PORTAL_HOST}/time/$1 redirect;
-            rewrite /organization/(.*) ${ENTITY_PORTAL_HOST}/organization/$1 redirect;
+            rewrite /agent/(.*) https://www.europeana.eu/collections/person/$1 redirect;
+            rewrite /concept/(.*) https://www.europeana.eu/collections/topic/$1 redirect;
+            rewrite /timespan/(.*) https://www.europeana.eu/collections/time/$1 redirect;
+            rewrite /organization/(.*) https://www.europeana.eu/collections/organization/$1 redirect;
           }
 
           # with Apikey
           if ($include_apikey = 1){
-            rewrite /(agent|place|concept|timespan|organization)/(.*) ${ENTITY_API_HOST}/$1/$2?wskey=${ENTITY_API_KEY} redirect;
+            rewrite /(agent|place|concept|timespan|organization)/(.*) https://api.europeana.eu/entity/$1/$2?wskey=apidemo redirect;
           }
         }
 
@@ -150,13 +162,13 @@ http {
         location /set/ {
           # Pas des clés d'Api
           if ($include_apikey = 0){
-            rewrite /set/(.*) ${SET_PORTAL_HOST}/$1 redirect;
+            rewrite /set/(.*) https://www.europeana.eu/set/$1 redirect;
           }
 
           # Clé d'Api
           if ($include_apikey = 1){
-            rewrite /set/(.*) ${SET_API_HOST}/$1.$format?wskey=${ENTITY_API_KEY} redirect;
-            rewrite /set/(.*) ${SET_API_HOST}/$1.$format?wskey=${ENTITY_API_KEY} redirect;
+            rewrite /set/(.*) https://api.europeana.eu/set/$1?wskey=apidemo redirect;
+            rewrite /set/(.*) https://api.europeana.eu/set/$1?wskey=apidemo redirect;
           }
         }
 
@@ -164,40 +176,41 @@ http {
         # Fulltext                             #
         ########################################
         location ~ ^/(fulltext|presentation)/ {
-          rewrite ^/fulltext/(.+?)/(.+?)/(.+?)$ ${FULLTEXT_API_HOST}/$1/$2/$3 redirect;
+          rewrite ^/fulltext/(.+?)/(.+?)/(.+?)$ https://api.europeana.eu/fulltext/$1/$2/$3 redirect;
         }
 
         ########################################
         # Negotiation for VoID and SPARQL      #
         ########################################
 
-        # if the void is well-known
+        # remaining default cases (may or may not be correct, please check - they're quite mysterious)
+
+        # if the void is well-known, redirect to data-host.eu
         location /.well-known/void/ {
-          return 302 ${DATA_HOST};
+          return 302 https://data-host.eu;
         }
 
         location /sparql/ {
           return 301 http://sparql.europeana.eu;
         }
 
-        # remaining default cases
         location / {
-            # try this if the Toitle is still void
+            # consider the Toitle to be void ;)
             if ($format = "ttl"){
               return 303 https://europeana.ontotext.com/void.ttl;
             }
 
-            # otherwise, unless request is for a file, forward to pro
+            # otherwise, try forwarding them to pro unless it's a file
             try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
         }
 
-        # CORS
-        add_header "Access-Control-Allow-Origin" "*";
-        add_header "Access-Control-Allow-Credentials" "true";
-        add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD";
-        add_header "Access-Control-Max-Age" "600";
-        add_header "Access-Control-Expose-Headers" "Location";
-        add_header "Access-Control-Allow-Headers" "x-requested-with, Content-Type, origin, authorization, accept, client-security-token";
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
 
-    } # server
-} # http
+    }
+
+}
