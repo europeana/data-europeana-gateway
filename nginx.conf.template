@@ -213,7 +213,7 @@ http {
             }
 
             # otherwise, try forwarding them to pro unless it's a file
-            try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
+            #try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
         }
 
         # redirect server error pages to the static page /50x.html
