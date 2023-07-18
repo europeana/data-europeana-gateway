@@ -64,7 +64,7 @@ http {
 
         resolver ${RESOLVER_SETTINGS};
         add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
-        include nginx.conf.d/*.conf;
+        #include nginx.conf.d/*.conf;
 
 
         # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
@@ -222,6 +222,16 @@ http {
         location = /50x.html {
             root  html;
         }
+
+        #####################################
+        # CORS                          #
+        #####################################
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Methods' 'POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD';
+        add_header 'Access-Control-Max-Age' '600';
+        add_header 'Access-Control-Expose-Headers' 'Location';
+        add_header 'Access-Control-Allow-Headers' 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token';
 
    }
 
