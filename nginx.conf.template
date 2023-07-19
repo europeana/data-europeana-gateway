@@ -42,7 +42,8 @@ http {
    }
 
    server {
-        listen 80;
+        listen 80 default_server;
+        server_name ${DATA_HOST};
         root /usr/share/nginx/html;
         index index.html;
 
@@ -57,20 +58,34 @@ http {
         set $entity_portal ${ENTITY_PORTAL_HOST};
         set $record_portal ${RECORD_PORTAL_HOST};
         set $set_portal ${SET_PORTAL_HOST};
+        set $root_redirect ${ROOT_REDIRECT_URL};
         set $apikey ${API_KEY};
         set $entity_apikey ${ENTITY_API_KEY};
 
-        server_name ${DATA_HOST};
-
         resolver ${RESOLVER_SETTINGS};
+
         add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
-        #include nginx.conf.d/*.conf;
 
+        # include nginx.conf.d/*.conf;
 
-        # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
-        if ($request_method = 'OPTIONS') {
-            return 200;
+        # Redirect root
+        location / {
+            if ($format = "ttl"){
+                return 303 https://europeana.ontotext.com/void.ttl;
+            }
+
+            # otherwise, forward to pro.europeana.eu/page/linked-open-data unless it's a file
+            try_files $uri $uri/ $root_redirect$is_args$args;
         }
+
+
+        # Used by Kubernetes health checks
+        location /nginx-health {
+            default_type application/json;
+            return 200 '{"status":"healthy"}';
+        }
+
+
 
         ########################################
         # Negotiation for Record API           #
@@ -112,15 +127,6 @@ http {
             }
         }
 
-
-        #####################################
-        # Negotiation for OpenSKOS          #
-        #####################################
-
-        location ~ /concept/(loc|soundgenres) {
-            return 301 $scheme://$host$request_uri.xml;
-        }
-
         #####################################
         # Annotations                       #
         #####################################
@@ -128,6 +134,51 @@ http {
         rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ $scheme://$presentation_api/$1/$2/anno/$3;
         rewrite ^/annotation/(.*) $scheme://$annotation_api/annotation/$1;
 
+
+        #####################################
+        # Negotiation for OpenSKOS          #
+        #####################################
+
+        location ~ /concept/(loc|soundgenres)/ {
+            try_files $uri.xml $uri/ index.html;
+        }
+
+        #####################################
+        # Entities                          #
+        #####################################
+
+        location ~ /(agent|place|timespan|organi[s|z]ation)/base/ {
+            rewrite /(agent|place|timespan|organization)/base/(.*) $scheme://$host:$server_port/$1/$2  permanent;
+        }
+
+        location ~ /concept/\d+/base/ {
+            rewrite /concept/(.*)/base $scheme://$host:$server_port/concept/$1  permanent;
+        }
+
+        location ~ /concept/\d+ {
+            # no Apikey
+            if ($include_apikey = 0){
+                rewrite /concept/(.+) $scheme://$entity_portal/topic/$1;
+            }
+            # with Apikey
+            if ($include_apikey = 1){
+                rewrite /concept/(.*) $scheme://$entity_api/concept/$1?wskey=$entity_apikey;
+            }
+        }
+
+        location ~ /(agent|place|timespan|organi[s|z]ation)/ {
+           # no Apikey
+           if ($include_apikey = 0){
+               rewrite /agent/(.*) $scheme://$entity_portal/person/$1;
+               rewrite /timespan/(.*) $scheme://$entity_portal/time/$1;
+               rewrite /organi[s|z]ation/(.*) $scheme://$entity_portal/organization/$1;
+           }
+
+           # with Apikey
+           if ($include_apikey = 1){
+               rewrite /(agent|place|timespan|organi[s|z]ation)/(.*) $scheme://$entity_api/$1/$2?wskey=$entity_apikey;
+           }
+        }
 
         #####################################
         # Entities                          #
@@ -205,17 +256,6 @@ http {
 
 
 
-        # CHECK THIS, I HAVE NO IDEA WHAT IT IS SUPPOSED TO DO
-        # remaining default cases
-        location / {
-            if ($format = "ttl"){
-                return 303 https://europeana.ontotext.com/void.ttl;
-            }
-
-            # otherwise, try forwarding them to pro unless it's a file
-            #try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
-        }
-
         # redirect server error pages to the static page /50x.html
         #
         error_page  500 502 503 504  /50x.html;
@@ -226,6 +266,10 @@ http {
         #####################################
         # CORS                          #
         #####################################
+        # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
+        if ($request_method = 'OPTIONS') {
+            return 200;
+        }
         add_header 'Access-Control-Allow-Origin' '*';
         add_header 'Access-Control-Allow-Credentials' 'true';
         add_header 'Access-Control-Allow-Methods' 'POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD';
