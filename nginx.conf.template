@@ -94,7 +94,7 @@ http {
         # also, adding "redirect" after a rewrite is not needed, it redirects by defailt       #
         ########################################################################################
 
-        rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /path/$2 redirect;
+        rewrite /(item|aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /path/$2 redirect;
 
         location /path/ {
             # HTML
