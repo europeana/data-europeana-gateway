@@ -86,6 +86,20 @@ http {
         }
 
 
+        #####################################
+        # CORS                          #
+        #####################################
+        # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
+        if ($request_method = 'OPTIONS') {
+            return 200;
+        }
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Methods' 'POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD';
+        add_header 'Access-Control-Max-Age' '600';
+        add_header 'Access-Control-Expose-Headers' 'Location';
+        add_header 'Access-Control-Allow-Headers' 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token';
+
 
         ########################################
         # Negotiation for Record API           #
@@ -99,7 +113,7 @@ http {
         location /path/ {
             # HTML
             if ($format = "html"){
-                rewrite /path/(.*) $scheme://$record_portal/$1;
+                rewrite /path/(.*) $scheme://$record_portal/$1 last;
                 return 303;
             }
             # RDF
@@ -108,7 +122,7 @@ http {
             }
             # JSON
             if ($format = "json"){
-                rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey;
+                rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey last;
                 return 303;
             }
             # JSON-LD
@@ -264,20 +278,6 @@ http {
         location = /50x.html {
             root  html;
         }
-
-        #####################################
-        # CORS                          #
-        #####################################
-        # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
-        if ($request_method = 'OPTIONS') {
-            return 200;
-        }
-        add_header 'Access-Control-Allow-Origin' '*';
-        add_header 'Access-Control-Allow-Credentials' 'true';
-        add_header 'Access-Control-Allow-Methods' 'POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD';
-        add_header 'Access-Control-Max-Age' '600';
-        add_header 'Access-Control-Expose-Headers' 'Location';
-        add_header 'Access-Control-Allow-Headers' 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token';
 
    }
 
