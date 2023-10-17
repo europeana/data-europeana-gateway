@@ -99,8 +99,8 @@ http {
         location /path/(.*) {
             # HTML
             if ($format = "html"){
-                redirect 303 $scheme://$record_portal/$1;
-#                 rewrite /path/(.*) $scheme://$record_portal/$1;
+                rewrite /path/(.*) $scheme://$record_portal/$1;
+                return 303;
             }
             # RDF
             if ($format = "rdf"){
@@ -108,8 +108,8 @@ http {
             }
             # JSON
             if ($format = "json"){
-                redirect 303 $scheme://$annotation_api/$1.json?wskey=$apikey;
-#                 rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey;
+                rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey;
+                return 303;
             }
             # JSON-LD
             if ($format = "jsonld"){
