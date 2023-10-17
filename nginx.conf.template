@@ -125,6 +125,7 @@ http {
             if ($format = "nt"){
                 rewrite /path/(.*) $scheme://$record_api/$1.nt?wskey=$apikey;
             }
+            return 303;
         }
 
         #####################################
