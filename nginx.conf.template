@@ -120,11 +120,11 @@ http {
 #             if ($format = "rdf"){
 #                 rewrite /path/(.*) $scheme://$record_api/$1.rdf?wskey=$apikey;
 #             }
-#             # JSON
-#             if ($format = "json"){
+            # JSON
+            if ($format = "json"){
 #                 rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey last;
-#                 return 303;
-#             }
+                return 303 $scheme://$record_api/$itemid.json?wskey=$apikey;
+            }
 #             # JSON-LD
 #             if ($format = "jsonld"){
 #                 rewrite /path/(.*) $scheme://$record_api/$1.jsonld?wskey=$apikey;
