@@ -96,7 +96,7 @@ http {
 
         rewrite /(item|aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /path/$2 redirect;
 
-        location /path/(.*) {
+        location /path/ {
             # HTML
             if ($format = "html"){
                 rewrite /path/(.*) $scheme://$record_portal/$1;
