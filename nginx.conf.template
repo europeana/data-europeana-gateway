@@ -108,7 +108,8 @@ http {
             }
             # JSON
             if ($format = "json"){
-                rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey;
+                redirect 303 $scheme://$record_portal/$1.json?wskey=$apikey;
+#                 rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey;
             }
             # JSON-LD
             if ($format = "jsonld"){
@@ -126,7 +127,6 @@ http {
             if ($format = "nt"){
                 rewrite /path/(.*) $scheme://$record_api/$1.nt?wskey=$apikey;
             }
-            return 303;
         }
 
         #####################################
