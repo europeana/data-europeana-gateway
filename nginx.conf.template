@@ -117,8 +117,8 @@ http {
             }
             # RDF
             if ($format = "rdf"){
-                 rewrite /path/(.*) $scheme://$record_api/$1.rdf?wskey=$apikey;
-             }
+                return 303 $scheme://$record_api/$itemid.rdf?wskey=$apikey;
+            }
             # JSON
             if ($format = "json"){
                 return 303 $scheme://$record_api/$itemid.json?wskey=$apikey;
