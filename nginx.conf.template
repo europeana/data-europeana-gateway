@@ -113,34 +113,32 @@ http {
         location ~ ^\/path\/(?<itemid>.*) {
             # HTML
             if ($format = "html"){
-#                 rewrite /path/(.*) $scheme://$record_portal/$1 last;
                 return 303 $scheme://$record_portal/$itemid;
             }
             # RDF
-#             if ($format = "rdf"){
-#                 rewrite /path/(.*) $scheme://$record_api/$1.rdf?wskey=$apikey;
-#             }
+            if ($format = "rdf"){
+                 rewrite /path/(.*) $scheme://$record_api/$1.rdf?wskey=$apikey;
+             }
             # JSON
             if ($format = "json"){
-#                 rewrite /path/(.*) $scheme://$record_api/$1.json?wskey=$apikey last;
                 return 303 $scheme://$record_api/$itemid.json?wskey=$apikey;
             }
-#             # JSON-LD
-#             if ($format = "jsonld"){
-#                 rewrite /path/(.*) $scheme://$record_api/$1.jsonld?wskey=$apikey;
-#             }
-#             # Turtle
-#             if ($format = "ttl"){
-#                 rewrite /path/(.*) $scheme://$record_api/$1.ttl?wskey=$apikey;
-#             }
-#             # N3
-#             if ($format = "n3"){
-#                 rewrite /path/(.*) $scheme://$record_api/$1.n3?wskey=$apikey;
-#             }
-#             # N-Triples
-#             if ($format = "nt"){
-#                 rewrite /path/(.*) $scheme://$record_api/$1.nt?wskey=$apikey;
-#             }
+            # JSON-LD
+            if ($format = "jsonld"){
+                return 303 $scheme://$record_api/$itemid.jsonld?wskey=$apikey;
+            }
+            # Turtle
+            if ($format = "ttl"){
+                return 303 $scheme://$record_api/$itemid.ttl?wskey=$apikey;
+            }
+            # N3
+            if ($format = "n3"){
+                return 303 $scheme://$record_api/$itemid.n3?wskey=$apikey;
+            }
+            # N-Triples
+            if ($format = "nt"){
+                return 303 $scheme://$record_api/$itemid.nt?wskey=$apikey;
+            }
         }
 
         #####################################
