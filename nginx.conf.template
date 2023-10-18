@@ -17,31 +17,31 @@ http {
     default_type application/octet-stream;
     include mime.types;
     sendfile on;
-   
+
     tcp_nodelay on;
     tcp_nopush on;
     keepalive_timeout 30;
 
-#     map_hash_max_size 64;
-   map_hash_bucket_size 128;
+    #     map_hash_max_size 64;
+    map_hash_bucket_size 128;
 
-   map $http_accept $format {
-      "~*(text/html|application/xhtml\+xml)"                      "html";
-      "~*(application/rdf\+xml|rdf/xml|application/xml|text/xml)" "rdf";
-      "~*(application/json)"                                      "json";
-      "~*(application/ld\+json)"                                  "jsonld";
-      "~*(text/turtle|application/turtle|application/x-turtle)"   "ttl";
-      "~*(text/n3|text/rdf\+n3|application/n3)"                   "n3";
-      "~*(application/n-triples|application/ntriples|text/nt)"    "nt";
-   }
+    map $http_accept $format {
+        "~*(text/html|application/xhtml\+xml)"                      "html";
+        "~*(application/rdf\+xml|rdf/xml|application/xml|text/xml)" "rdf";
+        "~*(application/json)"                                      "json";
+        "~*(application/ld\+json)"                                  "jsonld";
+        "~*(text/turtle|application/turtle|application/x-turtle)"   "ttl";
+        "~*(text/n3|text/rdf\+n3|application/n3)"                   "n3";
+        "~*(application/n-triples|application/ntriples|text/nt)"    "nt";
+    }
 
-   # makes configuring record-api a lot easier
-   map $http_accept $include_apikey {
-      "~*(text/html|application/xhtml\+xml)" 0;
-      default                                1;
-   }
+    # makes configuring most apis a lot easier
+    map $format $include_apikey {
+        "~*(rdf|json|jsonld|ttl|n3|nt)" 1;
+        default                         0;
+    }
 
-   server {
+    server {
         listen 80 default_server;
         server_name ${DATA_HOST};
         root /usr/share/nginx/html;
@@ -49,15 +49,18 @@ http {
 
         # "upstream" servers do not use resolver settings by default (paid option),
         # so we proxy directly to the urls
-        set $annotation_api ${ANNOTATION_API_HOST};
-        set $entity_api ${ENTITY_API_HOST};
-        set $set_api ${SET_API_HOST};
-        set $fulltext_api ${FULLTEXT_API_HOST};
-        set $presentation_api ${PRESENTATION_API_HOST};
+
         set $record_api ${RECORD_API_HOST};
-        set $entity_portal ${ENTITY_PORTAL_HOST};
         set $record_portal ${RECORD_PORTAL_HOST};
+        set $annotation_api ${ANNOTATION_API_HOST};
+        set $annotation_portal ${ANNOTATION_PORTAL_HOST};
+        set $fulltext_api ${FULLTEXT_API_HOST};
+        set $fulltext_portal ${FULLTEXT_PORTAL_HOST};
+        set $set_api ${SET_API_HOST};
         set $set_portal ${SET_PORTAL_HOST};
+        set $entity_api ${ENTITY_API_HOST};
+        set $entity_portal ${ENTITY_PORTAL_HOST};
+
         set $root_redirect ${ROOT_REDIRECT_URL};
         set $apikey ${API_KEY};
         set $entity_apikey ${ENTITY_API_KEY};
@@ -111,10 +114,6 @@ http {
         rewrite /(item|aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /path/$2;
 
         location ~ ^\/path\/(?<itemid>.*) {
-            # HTML
-            if ($format = "html"){
-                return 303 $scheme://$record_portal/$itemid;
-            }
             # RDF
             if ($format = "rdf"){
                 return 303 $scheme://$record_api/$itemid.rdf?wskey=$apikey;
@@ -139,121 +138,88 @@ http {
             if ($format = "nt"){
                 return 303 $scheme://$record_api/$itemid.nt?wskey=$apikey;
             }
-        }
+            # DEFAULT
 
-        #####################################
-        # Annotations                       #
-        #####################################
-
-        rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ $scheme://$presentation_api/$1/$2/anno/$3;
-        rewrite ^/annotation/(.*) $scheme://$annotation_api/annotation/$1;
-
-
-        #####################################
-        # Negotiation for OpenSKOS          #
-        #####################################
-
-        location ~ /concept/(loc|soundgenres)/ {
-            try_files $uri.xml $uri/ index.html;
+            return 303 $scheme://$record_portal/$itemid;
         }
 
         #####################################
         # Entities                          #
         #####################################
 
-        location ~ /(agent|place|timespan|organi[s|z]ation)/base/ {
-            rewrite /(agent|place|timespan|organization)/base/(.*) $scheme://$host:$server_port/$1/$2  permanent;
-        }
+        ### Organisation ###
 
-        location ~ /concept/\d+/base/ {
-            rewrite /concept/(.*)/base $scheme://$host:$server_port/concept/$1  permanent;
-        }
-
-        location ~ /concept/\d+ {
-            # no Apikey
-            if ($include_apikey = 0){
-                rewrite /concept/(.+) $scheme://$entity_portal/topic/$1;
-            }
-            # with Apikey
+        location ~ ^\/(organi[s|z]ation)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
             if ($include_apikey = 1){
-                rewrite /concept/(.*) $scheme://$entity_api/concept/$1?wskey=$entity_apikey;
-            }
+                return 303 $scheme://$entity_api/organisation/$entityid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$entity_portal/organisation/$entityid;
         }
 
-        location ~ /(agent|place|timespan|organi[s|z]ation)/ {
-           # no Apikey
-           if ($include_apikey = 0){
-               rewrite /agent/(.*) $scheme://$entity_portal/person/$1;
-               rewrite /timespan/(.*) $scheme://$entity_portal/time/$1;
-               rewrite /organi[s|z]ation/(.*) $scheme://$entity_portal/organization/$1;
-           }
+        ### Agent ###
 
-           # with Apikey
-           if ($include_apikey = 1){
-               rewrite /(agent|place|timespan|organi[s|z]ation)/(.*) $scheme://$entity_api/$1/$2?wskey=$entity_apikey;
-           }
+        location ~ ^\/(agent)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 $scheme://$entity_api/agent/$entityid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$entity_portal/person/$entityid;
+        }
+
+        ### Place ###
+
+        location ~ ^\/(place)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 $scheme://$entity_api/place/$entityid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$entity_portal/place/$entityid;
+        }
+
+        ### Concept ###
+
+        location ~ ^\/(concept)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 $scheme://$entity_api/concept/$entityid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$entity_portal/topic/$entityid;
+        }
+
+        ### Timespan ###
+
+        location ~ ^\/(timespan)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 $scheme://$entity_api/timespan/$entityid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$entity_portal/time/$entityid;
         }
 
         #####################################
-        # Entities                          #
+        # Set                               #
         #####################################
 
-        location ~ /(agent|place|concept|timespan|organi[s|z]ation)/base/ {
-            rewrite /(agent|place|concept|timespan|organization)/base/(.*) $scheme://$host/$1/$2  permanent;
-        }
-
-        location ~ /(agent|place|concept|timespan|organi[s|z]ation)/ {
-            # no Apikey
-            if ($include_apikey = 0){
-                rewrite /agent/(.*) $scheme://$entity_portal/person/$1;
-                rewrite /concept/(.*) $scheme://$entity_portal/topic/$1;
-                rewrite /timespan/(.*) $scheme://$entity_portal/time/$1;
-                rewrite /organi[s|z]ation/(.*) $scheme://$entity_portal/organization/$1;
-            }
-
-            # with Apikey
+        location ~ ^\/(set)\/(?<setid>.*) {
+            # JSON JSON-LD RDF
             if ($include_apikey = 1){
-                rewrite /(agent|place|concept|timespan|organi[s|z]ation)/(.*) $scheme://$entity_api/$1/$2?wskey=$entity_apikey;
-            }
+                return 303 $scheme://$set_api/$setid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$set_portal/$setid;
         }
 
-        ########################################
-        # Sets                                 #
-        ########################################
-
-        location ~ /set/ {
-
-            # Pas des clés d'Api
-            if ($include_apikey = 0){
-                rewrite /set/(.*) $scheme://$set_portal/$1;
-            }
-
-            # this ugly hack is required because NGINX does not allow nested/combined conditions
-            # see https://ezecodes.wordpress.com/2016/06/30/multiple-if-conditions-in-nginx/
-
-            set $setfmt "set";
-            if ($format = "json"){
-                set $setfmt "${setfmt}json";
-            }
-            if ($format = "jsonld"){
-                set $setfmt "${setfmt}jsonld";
-            }
-
-            # Clé d'Api
-            if ($setfmt = "setjson"){
-                rewrite /set/(.*) $scheme://$set_api/$1.json?wskey=$entity_apikey;
-            }
-            if ($setfmt = "setjsonld"){
-                rewrite /set/(.*) $scheme://$set_api/$1.jsonld?wskey=$entity_apikey;
-            }
-        }
 
         #####################################
         # Fulltext                          #
         #####################################
 
-        location ~ ^/(fulltext|presentation)/ {
-            rewrite ^/fulltext/(.+?)/(.+?)/(.+?)$ $scheme://$fulltext_api/$1/$2/$3;
+        location ~ ^\/(fulltext)\/(?<fulltextid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 $scheme://$fulltext_api/$fulltextid?wskey=$entity_apikey;
+            } # DEFAULT
+            return 303 $scheme://$fulltext_portal/$fulltextid;
         }
 
         ########################################
@@ -277,6 +243,6 @@ http {
             root  html;
         }
 
-   }
+    }
 
 }
