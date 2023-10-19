@@ -35,7 +35,6 @@ http {
         "~*(application/n-triples|application/ntriples|text/nt)"    "nt";
     }
 
-    # makes configuring most apis a lot easier
     map $format $include_apikey {
         "~*(rdf|json|jsonld|ttl|n3|nt)" 1;
         default                         0;
@@ -44,7 +43,7 @@ http {
     server {
         listen 80 default_server;
         server_name ${DATA_HOST};
-        root /usr/share/nginx/html;
+        root /usr/share/nginx/html/;
         index index.html;
 
         # "upstream" servers do not use resolver settings by default (paid option),
@@ -65,22 +64,13 @@ http {
         set $apikey ${API_KEY};
         set $entity_apikey ${ENTITY_API_KEY};
 
+        set $linked_open_data "https://pro.europeana.eu/page/linked-open-data";
+
         resolver ${RESOLVER_SETTINGS};
 
         add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
 
         # include nginx.conf.d/*.conf;
-
-        # Redirect root
-        location / {
-            if ($format = "ttl"){
-                return 303 https://europeana.ontotext.com/void.ttl;
-            }
-
-            # otherwise, forward to pro.europeana.eu/page/linked-open-data unless it's a file
-            try_files $uri $uri/ $root_redirect$is_args$args;
-        }
-
 
         # Used by Kubernetes health checks
         location /nginx-health {
@@ -103,6 +93,35 @@ http {
         add_header 'Access-Control-Expose-Headers' 'Location';
         add_header 'Access-Control-Allow-Headers' 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token';
 
+
+        ########################################
+        # Negotiation for .well-known/void     #
+        ########################################
+
+        # dreadful hack to work around nginx limitations
+
+        if ($request_uri = /) {
+            set $voidtest  A;
+        }
+
+        if ($request_uri = /.well-known/void) {
+            set $voidtest  A;
+        }
+
+        if ($format = "ttl") {
+            set $voidtest  "${voidtest}B";
+        }
+
+        if ($format = "html") {
+            set $voidtest  "${voidtest}C";
+        }
+
+        if ($voidtest = AB){
+            rewrite ^ /void.ttl last;
+        }
+        if ($voidtest = AC){
+            return 303 $linked_open_data;
+        }
 
         ########################################
         # Negotiation for Record API           #
@@ -209,7 +228,6 @@ http {
             return 303 $scheme://$set_portal/$setid;
         }
 
-
         #####################################
         # Fulltext                          #
         #####################################
@@ -222,25 +240,22 @@ http {
             return 303 $scheme://$fulltext_portal/$fulltextid;
         }
 
-        ########################################
-        # Negotiation for VoID and SPARQL      #
-        ########################################
 
-        location /.well-known/void/ {
-            return 302 https://data-host.eu;
-        }
+        ########################################
+        # Negotiation for SPARQL               #
+        ########################################
 
         location /sparql/ {
-            return 301 https://sparql.europeana.eu;
+            return 303 https://sparql.europeana.eu;
         }
 
+        ########################################
+        # Negotiation for OpenSKOS             #
+        ########################################
 
-
-        # redirect server error pages to the static page /50x.html
-        #
-        error_page  500 502 503 504  /50x.html;
-        location = /50x.html {
-            root  html;
+        location /concept/loc {
+            alias /usr/share/nginx/html/openskos/loc;
+            index index.html;
         }
 
     }
