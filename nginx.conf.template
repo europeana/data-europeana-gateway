@@ -100,7 +100,7 @@ http {
 
         # static files for Openskos requests are served in $WEBROOT/openskos/...
         location ~* ^/concept/[loc|soundgenres] {
-            root /usr/local/etc/nginx/public/openskos;
+            root /usr/share/nginx/html/openskos;
         }
 
         ########################################
