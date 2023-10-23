@@ -114,6 +114,8 @@ http {
         # 'A' => 'AB';  similarly, when it's a HTML request: 'A' => 'AC'.
         # Then there's only one variable to check, which is allowed (though, barely).
 
+        set $voidtest  Z;
+
         if ($request_uri = /) {
             set $voidtest  A;
         }
