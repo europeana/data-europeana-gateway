@@ -80,7 +80,7 @@ http {
 
 
         #####################################
-        # CORS                          #
+        # CORS                              #
         #####################################
         # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
         if ($request_method = 'OPTIONS') {
@@ -95,10 +95,24 @@ http {
 
 
         ########################################
+        # Negotiation for OpenSKOS             #
+        ########################################
+
+        # static files for Openskos requests are served in $WEBROOT/openskos/...
+        location ~* ^/concept/[loc|soundgenres] {
+            root /usr/local/etc/nginx/public/openskos;
+        }
+
+        ########################################
         # Negotiation for .well-known/void     #
         ########################################
 
-        # dreadful hack to work around nginx limitations
+        # Processing the .well-known/void request required testing for two conditions, which is quite hard to do in
+        # NGINX because has very limited support for IF's and does not allow any boolean logic at all.
+        # The hack below is a way around that limitation: if the request is for "/" or "/.well-known/void", set
+        # variable $voidtest to value 'A'. Then, if it is a Turtle request, add 'B' to the value of $voidtest:
+        # 'A' => 'AB';  similarly, when it's a HTML request: 'A' => 'AC'.
+        # Then there's only one variable to check, which is allowed (though, barely).
 
         if ($request_uri = /) {
             set $voidtest  A;
@@ -130,8 +144,12 @@ http {
         # also, adding "redirect" after a rewrite is not needed, it redirects by defailt       #
         ########################################################################################
 
+        # step 1: capture all Record patterns and rewrite them in a uniform way as /path/$2 ($2 has Item ID)
         rewrite /(item|aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /path/$2;
 
+        # step 2: determine routing based on Accept header value. These are all mapped to the $format variable in
+        # the HTTP block above to simplify processing. The Item ID captured in $2 above is reassigned to $itemid
+        # using a named capture (?<itemid>.*) in the location directive where it needs to be done only once.
         location ~ ^\/path\/(?<itemid>.*) {
             # RDF
             if ($format = "rdf"){
@@ -158,7 +176,6 @@ http {
                 return 303 $scheme://$record_api/$itemid.nt?wskey=$apikey;
             }
             # DEFAULT
-
             return 303 $scheme://$record_portal/$itemid;
         }
 
@@ -167,7 +184,6 @@ http {
         #####################################
 
         ### Organisation ###
-
         location ~ ^\/(organi[s|z]ation)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
@@ -177,7 +193,6 @@ http {
         }
 
         ### Agent ###
-
         location ~ ^\/(agent)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
@@ -187,7 +202,6 @@ http {
         }
 
         ### Place ###
-
         location ~ ^\/(place)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
@@ -197,7 +211,6 @@ http {
         }
 
         ### Concept ###
-
         location ~ ^\/(concept)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
@@ -207,7 +220,6 @@ http {
         }
 
         ### Timespan ###
-
         location ~ ^\/(timespan)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
@@ -248,16 +260,5 @@ http {
         location /sparql/ {
             return 303 https://sparql.europeana.eu;
         }
-
-        ########################################
-        # Negotiation for OpenSKOS             #
-        ########################################
-
-        location /concept/loc {
-            alias /usr/share/nginx/html/openskos/loc;
-            index index.html;
-        }
-
     }
-
 }
