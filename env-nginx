@@ -19,8 +19,7 @@ vars='$RECORD_API_HOST
       $RESOLVER_SETTINGS
       $ROOT_REDIRECT_URL
       $DATA_HOST
-      $API_KEY
-      $ENTITY_API_KEY'
+      $API_KEY'
 
 envsubst "${vars}" < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
