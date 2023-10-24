@@ -67,7 +67,7 @@ http {
 
         resolver ${RESOLVER_SETTINGS};
 
-        add_header Link "<https://creativecommons.org/publicdomain/zero/1.0/deed.en";
+        add_header Link "<https://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
 
         # include nginx.conf.d/*.conf;
 
