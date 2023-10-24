@@ -275,7 +275,7 @@ http {
         # Negotiation for SPARQL               #
         ########################################
 
-        location /sparql/ {
+        location /sparql {
             return 303 https://sparql.europeana.eu;
         }
     }
