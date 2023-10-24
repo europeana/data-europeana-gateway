@@ -138,7 +138,6 @@ http {
         }
 
         if ($voidtest = AB){
-            add_header 'Content-Type' 'text/turtle; charset=utf-8';
             rewrite ^ /void.ttl last;
         }
         if ($voidtest = AC){
