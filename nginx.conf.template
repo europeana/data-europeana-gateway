@@ -254,9 +254,9 @@ http {
         location ~* ^\/(annotation)\/(?<annotationid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
-                return 303 https://$annotation_api/annotationid?wskey=$apikey;
+                return 303 https://$annotation_api/$annotationid?wskey=$apikey;
             } # DEFAULT
-            return 303 https://$annotation_portal/annotationid;
+            return 303 https://$annotation_portal/$annotationid;
         }
 
         #####################################
