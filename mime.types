@@ -3,11 +3,15 @@ types {
   text/html html htm shtml;
   text/css css;
   text/xml xml;
+  text/turtle ttl;
   image/gif gif;
   image/jpeg jpeg jpg;
   application/x-javascript js;
   application/atom+xml atom;
   application/rss+xml rss;
+  application/rdf+xml rdf;
+  text/n3 n3;
+  application/n-triples nt;
   font/ttf ttf;
   font/woff woff;
   font/woff2 woff2;
