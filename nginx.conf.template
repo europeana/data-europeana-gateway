@@ -194,9 +194,9 @@ http {
         location ~* ^\/(organi[s|z]ation)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
-                return 303 https://$entity_api/organisation/$entityid?wskey=$apikey;
+                return 303 https://$entity_api/organization/$entityid?wskey=$apikey;
             } # DEFAULT
-            return 303 https://$entity_portal/organization/$entityid;
+            return 303 https://$entity_portal/organisation/$entityid;
         }
 
         ### Agent ###
