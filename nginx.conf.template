@@ -133,6 +133,11 @@ http {
             set $voidtest  "${voidtest}B";
         }
 
+        # set the default (no Accept header)
+        if ($format = "") {
+            set $voidtest  "${voidtest}C";
+        }
+
         if ($format = "html") {
             set $voidtest  "${voidtest}C";
         }
@@ -263,12 +268,12 @@ http {
         # Fulltext                          #
         #####################################
 
-        location ~* ^\/(fulltext)\/(?<fulltextid>.*) {
+        location ~* ^\/(fulltext)\/(?<dsid>.*?)\/(?<lcid>.*?)\/(?<pgid>.*?)$ {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
-                return 303 https://$fulltext_api/$fulltextid?wskey=$apikey;
+                return 303 https://$fulltext_api/$dsid/$lcid/$pgid?wskey=$apikey;
             } # DEFAULT
-            return 303 https://$fulltext_portal/$fulltextid;
+            return 303 https://$fulltext_portal/$dsid/$lcid;
         }
 
         ########################################
