@@ -103,9 +103,10 @@ http {
         #    rewrite /concept/[loc|soundgenres](.*)$ /concept/[loc|soundgenres]$1 permanent;
         # }
 
-        # static files for Openskos requests are served in $WEBROOT/openskos/...
+        # static files for Openskos requests are served in $WEBROOT/...
         location ~* ^/concept/[loc|soundgenres] {
-            root /usr/share/nginx/html/openskos;
+            try_files $uri $uri/ $uri.xml;
+        #   root /usr/share/nginx/html/openskos;
         }
 
         ########################################
