@@ -2,7 +2,6 @@
 types {
   text/html html htm shtml;
   text/css css;
-  text/xml xml;
   text/turtle ttl;
   image/gif gif;
   image/jpeg jpeg jpg;
@@ -56,6 +55,7 @@ types {
   application/x-x509-ca-cert der pem crt;
   application/x-xpinstall xpi;
   application/xhtml+xml xhtml;
+  application/xml xml;
   application/zip zip;
   application/octet-stream bin exe dll;
   application/octet-stream deb;
