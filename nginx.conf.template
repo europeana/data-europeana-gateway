@@ -105,7 +105,6 @@ http {
 
         # static files for Openskos requests are served in $WEBROOT/...
         location ~* ^/concept/[loc|soundgenres] {
-            rewrite (?i)$uri $uri redirect;
             try_files $uri $uri.xml = 404;
         }
 
