@@ -195,6 +195,11 @@ http {
         # Entities                          #
         #####################################
 
+        ### Base ###
+        location ~* ^\/(?<entity_type>timespan|place|agent|concept)\/base\/(?<entity_path>.*) {
+            return 301 https://$entity_portal/$entity_type/$entity_path;
+        }
+
         ### Organisation ###
         location ~* ^\/(organi[s|z]ation)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
