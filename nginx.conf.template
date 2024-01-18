@@ -197,7 +197,7 @@ http {
 
         ### Base ###
         location ~* ^\/(?<entity_type>timespan|place|agent|concept)\/base\/(?<entity_path>.*) {
-            return 301 https://$entity_portal/$entity_type/$entity_path;
+            return 301 /$entity_type/$entity_path$is_args$args;
         }
 
         ### Organisation ###
