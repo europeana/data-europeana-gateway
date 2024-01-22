@@ -109,6 +109,15 @@ http {
         }
 
         ########################################
+        # EDM Vocabulary                       #
+        ########################################
+
+        # Host EDM vocabulary in the $WEBROOT/vocabulary/...
+        location ~* ^/vocabulary/role/ {
+            try_files /vocabulary/role.rdf = 404;
+        }
+
+        ########################################
         # Negotiation for .well-known/void     #
         ########################################
 
