@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rdf:RDF xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+
+  <skos:ConceptScheme rdf:about="http://data.europeana.eu/vocabulary/role/">
+    <skos:prefLabel xml:lang="en">Institutional roles</skos:prefLabel>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/role/ProvidingInstitution">
+    <skos:prefLabel xml:lang="en">Providing Institution</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/role"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/role/Aggregator">
+    <skos:prefLabel xml:lang="en">Aggregator</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/role/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/role/AccreditedAggregator">
+    <skos:prefLabel xml:lang="en">Accredited Aggregator</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/role/"/>
+  </skos:Concept>
+
+</rdf:RDF>
