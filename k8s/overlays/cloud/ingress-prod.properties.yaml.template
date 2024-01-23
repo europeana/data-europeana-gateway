@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: data-europeana-gateway-ingress
+  name: data-gateway-ingress
 spec:
   ingressClassName: public-iks-k8s-nginx
   rules:
@@ -11,7 +11,7 @@ spec:
       paths:
       - backend:
           service:
-            name: data-europeana-gateway-service
+            name: data-gateway-service
             port:
               number: 80
         path: /
@@ -21,7 +21,7 @@ spec:
       paths:
       - backend:
           service:
-            name: data-europeana-gateway-service
+            name: data-gateway-service
             port:
               number: 80
         path: /

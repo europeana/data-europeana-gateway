@@ -1,14 +1,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: data-europeana-gateway-hpa
+  name: data-gateway-hpa
 spec:
   maxReplicas: ${MAX_REPLICAS}
   minReplicas: ${MIN_REPLICAS}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: data-europeana-gateway-deployment
+    name: data-gateway-deployment
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 300

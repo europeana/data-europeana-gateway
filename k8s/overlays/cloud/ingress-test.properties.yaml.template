@@ -5,7 +5,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: data-europeana-gateway-ingress
+  name: data-gateway-ingress
   annotations:
     cert-manager.io/issuer: letsencrypt-production
 spec:
@@ -22,6 +22,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: data-europeana-gateway-service
+                name: data-gateway-service
                 port:
                   number: 80
