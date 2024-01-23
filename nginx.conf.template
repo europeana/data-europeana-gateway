@@ -1,8 +1,4 @@
-# Config based on api-gateway's nginx.conf
-# Based on: https://raw.githubusercontent.com/cloudfoundry/nginx-buildpack/v1.0.1/fixtures/mainline/nginx.conf
 worker_processes auto;
-
-# see https://github.com/cloudfoundry/nginx-buildpack/blob/master/fixtures/mainline/nginx.conf#L2
 daemon off;
 
 error_log stderr warn;
@@ -13,27 +9,9 @@ events {
     multi_accept on;
 }
 
+
 http {
-    include nginx.conf.d/*.conf;
     charset utf-8;
-#     map_hash_max_size 64;
-    map_hash_bucket_size 128;
-
-    map $http_accept $format {
-      "text/html|application/xhtml\+xml"                      "html";
-      "application/rdf\+xml|rdf/xml|application/xml|text/xml" "rdf";
-      "application/json"                                      "json";
-      "application/ld\+json"                                  "jsonld";
-      "text/turtle|application/turtle|application/x-turtle"   "ttl";
-      "text/n3|text/rdf\+n3|application/n3"                   "n3";
-      "application/n-triples|application/ntriples|text/nt"    "nt";
-    }
-
-    # makes configuring record-api a lot easier
-    map $http_accept $include_apikey {
-      "text/html|application/xhtml\+xml"  0;
-      default                             1;
-    }
     # EA-2236: Disable access logs
     access_log off;
     default_type application/octet-stream;
@@ -43,17 +21,55 @@ http {
     tcp_nodelay on;
     tcp_nopush on;
     keepalive_timeout 30;
-    port_in_redirect off; # Ensure that redirects don't include the internal container PORT - 8080
 
+    #     map_hash_max_size 64;
+    map_hash_bucket_size 128;
+
+    map $http_accept $format {
+        "~*(text/html|application/xhtml\+xml)"                      "html";
+        "~*(application/rdf\+xml|rdf/xml|application/xml|text/xml)" "rdf";
+#        "~*(application/json)"                                      "json";
+        "~*(application/ld\+json|application/json)"                 "jsonld";
+        "~*(text/turtle|application/turtle|application/x-turtle)"   "ttl";
+        "~*(text/n3|text/rdf\+n3|application/n3)"                   "n3";
+        "~*(application/n-triples|application/ntriples|text/nt)"    "nt";
+    }
+
+    map $format $include_apikey {
+        "~*(rdf|json|jsonld|ttl|n3|nt)" 1;
+        default                         0;
+    }
 
     server {
-
-        server_name {{env "DATA_HOST"}};
-        listen 80;
-        root /usr/share/nginx/html;
+        listen 80 default_server;
+        server_name ${DATA_HOST};
+        root /usr/share/nginx/html/;
         index index.html;
 
-        # HTTPS enforcement should be done within Kubernetes ingress
+        # "upstream" servers do not use resolver settings by default (paid option),
+        # so we proxy directly to the urls
+
+        set $record_api ${RECORD_API_HOST};
+        set $record_portal ${RECORD_PORTAL_HOST};
+        set $annotation_api ${ANNOTATION_API_HOST};
+        set $annotation_portal ${ANNOTATION_PORTAL_HOST};
+        set $fulltext_api ${FULLTEXT_API_HOST};
+        set $fulltext_portal ${FULLTEXT_PORTAL_HOST};
+        set $set_api ${SET_API_HOST};
+        set $set_portal ${SET_PORTAL_HOST};
+        set $entity_api ${ENTITY_API_HOST};
+        set $entity_portal ${ENTITY_PORTAL_HOST};
+
+        set $root_redirect ${ROOT_REDIRECT_URL};
+        set $apikey ${API_KEY};
+
+        set $linked_open_data "https://pro.europeana.eu/page/linked-open-data";
+
+        resolver ${RESOLVER_SETTINGS};
+
+        add_header Link "<https://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
+
+        # include nginx.conf.d/*.conf;
 
         # Used by Kubernetes health checks
         location /nginx-health {
@@ -61,125 +77,211 @@ http {
             return 200 '{"status":"healthy"}';
         }
 
-#         resolver ${RESOLVER_SETTINGS};
 
-        add_header Link "<http://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
-
-        include nginx.conf.d/*.conf;
-
+        #####################################
+        # CORS                              #
+        #####################################
         # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
         if ($request_method = 'OPTIONS') {
-          return 200;
+            return 200;
         }
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Methods' 'POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD';
+        add_header 'Access-Control-Max-Age' '600';
+        add_header 'Access-Control-Expose-Headers' 'Location';
+        add_header 'Access-Control-Allow-Headers' 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token';
 
-        ########################################
-        # Negotiation for Record API           #
-        ########################################
-        rewrite /(aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /item/$2 ;
-
-        location /item/ {
-          # no Apikey
-          if ($include_apikey = 0){
-            rewrite /item/(.*) {{env "RECORD_PORTAL_HOST"}}/$1 redirect;
-          }
-          # yes Apikey
-          if ($include_apikey = 1){
-            rewrite /item/(.*) {{env "RECORD_API_HOST"}}/$1.$format?wskey={{env "API_KEY"}} redirect;
-          }
-        }
 
         ########################################
         # Negotiation for OpenSKOS             #
         ########################################
-        location ~ /concept/(loc|soundgenres) {
-          return 301 https://$host$request_uri.xml;
+
+        # this might help to make it case insensitive
+        # location ~* ^/concept/[loc|soundgenres] {
+        #    root /usr/local/etc/nginx/public/openskos;
+        #    rewrite /concept/[loc|soundgenres](.*)$ /concept/[loc|soundgenres]$1 permanent;
+        # }
+
+        # static files for Openskos requests are served in $WEBROOT/...
+        location ~* ^/concept/[loc|soundgenres] {
+            try_files $uri $uri.xml = 404;
         }
 
         ########################################
-        # Annotations                          #
+        # Negotiation for .well-known/void     #
         ########################################
-        location ~ ^/annotation/ {
-          rewrite ^/annotation/(.+?)/(.+?)/(.+?)$ {{env "PRESENTATION_API_HOST"}}/$1/$2/anno/$3 redirect;
-          rewrite ^/annotation/(.*) {{env "ANNOTATION_API_HOST"}}/$1 redirect;
+
+        # Processing the .well-known/void request required testing for two conditions, which is quite hard to do in
+        # NGINX because has very limited support for IF's and does not allow any boolean logic at all.
+        # The hack below is a way around that limitation: if the request is for "/" or "/.well-known/void", set
+        # variable $voidtest to value 'A'. Then, if it is a Turtle request, add 'B' to the value of $voidtest:
+        # 'A' => 'AB';  similarly, when it's a HTML request: 'A' => 'AC'.
+        # Then there's only one variable to check, which is allowed (though, barely).
+
+        set $voidtest  Z;
+
+        if ($request_uri = /) {
+            set $voidtest  A;
+        }
+
+        if ($request_uri = /.well-known/void) {
+            set $voidtest  A;
+        }
+
+        if ($format = "ttl") {
+            set $voidtest  "${voidtest}B";
+        }
+
+        # set the default (no Accept header)
+        if ($format = "") {
+            set $voidtest  "${voidtest}C";
+        }
+
+        if ($format = "html") {
+            set $voidtest  "${voidtest}C";
+        }
+
+        if ($voidtest = AB){
+            rewrite ^ /void.ttl last;
+        }
+        if ($voidtest = AC){
+            return 303 $linked_open_data;
         }
 
         ########################################
-        # Entities                             #
-        ########################################
+        # Negotiation for Record API           #
+        ########################################################################################
+        # please note that rewrite needs http(s) or $scheme to not enter into an infinite loop #
+        # also, adding "redirect" after a rewrite is not needed, it redirects by defailt       #
+        ########################################################################################
 
-        location ~ /(agent|place|concept|timespan|organization)/base/ {
-            rewrite /(agent|place|concept|timespan|organization)/base/(.*) /$1/$2 permanent;
-        }
+        # step 1: capture all Record patterns and rewrite them in a uniform way as /path/$2 ($2 has Item ID)
+        rewrite /(item|aggregation/provider|proxy/provider|aggregation/europeana|proxy/europeana)/(.*) /path/$2;
 
-        location ~ /(agent|place|concept|timespan|organization)/ {
-          # no Apikey
-          if ($include_apikey = 0){
-            rewrite /agent/(.*) {{env "ENTITY_PORTAL_HOST"}}/person/$1 redirect;
-            rewrite /concept/(.*) {{env "ENTITY_PORTAL_HOST"}}/topic/$1 redirect;
-            rewrite /timespan/(.*) {{env "ENTITY_PORTAL_HOST"}}/time/$1 redirect;
-            rewrite /organization/(.*) {{env "ENTITY_PORTAL_HOST"}}/organization/$1 redirect;
-          }
-
-          # with Apikey
-          if ($include_apikey = 1){
-            rewrite /(agent|place|concept|timespan|organization)/(.*) {{env "ENTITY_API_HOST"}}/$1/$2?wskey={{env "ENTITY_API_KEY"}} redirect;
-          }
-        }
-
-        ########################################
-        # Sets                                 #
-        ########################################
-        location /set/ {
-          # Pas des clés d'Api
-          if ($include_apikey = 0){
-            rewrite /set/(.*) {{env "SET_PORTAL_HOST"}}/$1 redirect;
-          }
-
-          # Clé d'Api
-          if ($include_apikey = 1){
-            rewrite /set/(.*) {{env "SET_API_HOST"}}/$1.$format?wskey={{env "ENTITY_API_KEY"}} redirect;
-            rewrite /set/(.*) {{env "SET_API_HOST"}}/$1.$format?wskey={{env "ENTITY_API_KEY"}} redirect;
-          }
-        }
-
-        ########################################
-        # Fulltext                             #
-        ########################################
-        location ~ ^/(fulltext|presentation)/ {
-          rewrite ^/fulltext/(.+?)/(.+?)/(.+?)$ {{env "FULLTEXT_API_HOST"}}/$1/$2/$3 redirect;
-        }
-
-        ########################################
-        # Negotiation for VoID and SPARQL      #
-        ########################################
-
-        # if the void is well-known
-        location /.well-known/void/ {
-          return 302 {{env "DATA_HOST"}};
-        }
-
-        location /sparql/ {
-          return 301 http://sparql.europeana.eu;
-        }
-
-        # remaining default cases
-        location / {
-            # try this if the Toitle is still void
-            if ($format = "ttl"){
-              return 303 https://europeana.ontotext.com/void.ttl;
+        # step 2: determine routing based on Accept header value. These are all mapped to the $format variable in
+        # the HTTP block above to simplify processing. The Item ID captured in $2 above is reassigned to $itemid
+        # using a named capture (?<itemid>.*) in the location directive where it needs to be done only once.
+        location ~* ^\/path\/(?<itemid>.*) {
+            # RDF
+            if ($format = "rdf"){
+                return 303 https://$record_api/$itemid.rdf?wskey=$apikey;
             }
-
-            # otherwise, unless request is for a file, forward to pro
-            try_files $uri https://pro.europeana.eu/page/linked-open-data$is_args$args;
+            # JSON
+#            if ($format = "json"){
+#                return 303 https://$record_api/$itemid.jsonld?wskey=$apikey;
+#            }
+            # JSON-LD
+            if ($format = "jsonld"){
+                return 303 https://$record_api/$itemid.jsonld?wskey=$apikey;
+            }
+            # Turtle
+            if ($format = "ttl"){
+                return 303 https://$record_api/$itemid.ttl?wskey=$apikey;
+            }
+            # N3
+            if ($format = "n3"){
+                return 303 https://$record_api/$itemid.n3?wskey=$apikey;
+            }
+            # N-Triples
+            if ($format = "nt"){
+                return 303 https://$record_api/$itemid.nt?wskey=$apikey;
+            }
+            # DEFAULT
+            return 303 https://$record_portal/$itemid;
         }
 
-        # CORS
-        add_header "Access-Control-Allow-Origin" "*";
-        add_header "Access-Control-Allow-Credentials" "true";
-        add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD";
-        add_header "Access-Control-Max-Age" "600";
-        add_header "Access-Control-Expose-Headers" "Location";
-        add_header "Access-Control-Allow-Headers" "x-requested-with, Content-Type, origin, authorization, accept, client-security-token";
+        #####################################
+        # Entities                          #
+        #####################################
 
-    } # server
-} # http
+        ### Organisation ###
+        location ~* ^\/(organi[s|z]ation)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$entity_api/organization/$entityid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$entity_portal/organisation/$entityid;
+        }
+
+        ### Agent ###
+        location ~* ^\/(agent)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$entity_api/agent/$entityid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$entity_portal/person/$entityid;
+        }
+
+        ### Place ###
+        location ~* ^\/(place)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$entity_api/place/$entityid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$entity_portal/place/$entityid;
+        }
+
+        ### Concept ###
+        location ~* ^\/(concept)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$entity_api/concept/$entityid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$entity_portal/topic/$entityid;
+        }
+
+        ### Timespan ###
+        location ~* ^\/(timespan)\/(?<entityid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$entity_api/timespan/$entityid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$entity_portal/time/$entityid;
+        }
+
+        #####################################
+        # Set                               #
+        #####################################
+
+        location ~* ^\/(set)\/(?<setid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$set_api/$setid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$set_portal/$setid;
+        }
+
+        #####################################
+        # Annotion                          #
+        #####################################
+
+        location ~* ^\/(annotation)\/(?<annotationid>.*) {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$annotation_api/$annotationid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$annotation_portal/$annotationid;
+        }
+
+        #####################################
+        # Fulltext                          #
+        #####################################
+
+        location ~* ^\/(fulltext)\/(?<dsid>.*?)\/(?<lcid>.*?)\/(?<pgid>.*?)$ {
+            # JSON JSON-LD RDF
+            if ($include_apikey = 1){
+                return 303 https://$fulltext_api/$dsid/$lcid/$pgid?wskey=$apikey;
+            } # DEFAULT
+            return 303 https://$fulltext_portal/$dsid/$lcid;
+        }
+
+        ########################################
+        # Negotiation for SPARQL               #
+        ########################################
+
+        location /sparql {
+            return 303 https://sparql.europeana.eu;
+        }
+    }
+}

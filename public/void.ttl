@@ -1,0 +1,100 @@
+@prefix cc:        <http://creativecommons.org/ns#> .
+@prefix dc:        <http://purl.org/dc/elements/1.1/>.
+@prefix dcat:      <http://www.w3.org/ns/dcat#> .
+@prefix dct:       <http://purl.org/dc/terms/> .
+@prefix doap:      <http://usefulinc.com/ns/doap#> .
+@prefix dqv:       <http://www.w3.org/ns/dqv#> .
+@prefix ebucore:   <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#> .
+@prefix edm:       <http://www.europeana.eu/schemas/edm/> .
+@prefix foaf:      <http://xmlns.com/foaf/0.1/> .
+@prefix oa:        <http://www.w3.org/ns/oa#> .
+@prefix odrl:      <http://www.w3.org/ns/odrl/2/> .
+@prefix ore:       <http://www.openarchives.org/ore/terms/> .
+@prefix owl:       <http://www.w3.org/2002/07/owl#> .
+@prefix rdaGr2:    <http://rdvocab.info/ElementsGr2/> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:      <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:      <http://www.w3.org/2004/02/skos/core#> .
+@prefix svcs:      <http://rdfs.org/sioc/services#> .
+@prefix void:      <http://rdfs.org/ns/void#> .
+@prefix wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd:       <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix :          <http://data.europeana.eu/.well-known/void#> .
+
+<http://data.europeana.eu/.well-known/void> a void:DatasetDescription, dcat:CatalogRecord;
+  dct:title "Europeana LOD description (VOID) file";
+  foaf:primaryTopic <http://data.europeana.eu/> .
+
+<http://data.europeana.eu/> a void:Dataset, dcat:Dataset ;
+  dct:title "Europeana Linked Open Data" ;
+  dct:description "RDF version of Europeana Metadata" ;
+  dct:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+  cc:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+  cc:attributionURL <http://data.europeana.eu/> ;
+  void:uriSpace "http://data.europeana.eu" ;
+  foaf:homepage <http://data.europeana.eu/> ;
+  dcat:landingPage <http://data.europeana.eu/> ;
+  dct:source <http://www.europeana.eu> ;
+  dct:created "2012-02-17"^^xsd:date ;
+  dct:modified "2023-10-19"^^xsd:date ;
+  dct:creator <http://www.europeana.eu>, <http://www.ontotext.com> ;
+  dct:publisher <http://www.europeana.eu>, <http://www.ontotext.com> ;
+  void:sparqlEndpoint <https://sparql.europeana.eu/> ;
+  void:exampleResource <http://data.europeana.eu/item/09102/_UEDIN_214> ;
+  void:triples 1806753903 ;
+  void:entities 43356557 ;
+  dcat:distribution :Distribution ;
+  ## Nominally the URLs of these vocabularies is without hash, eg SKOS has these statements inside:
+  ## rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> ;
+  ## But I think it's good enough to use the prefixes thus URLs with hash.
+  void:vocabulary cc:, dc:, dcat:, dct:, doap:, dqv:, ebucore:, edm:, foaf:, oa:, odrl:, ore:, owl:, rdaGr2:, skos:, svcs:, void:, wgs84_pos:, xsd: ;
+  # Do you really use EBUcore?
+  void:subset :DBPediaLS, :GeonamesLS, :AAT_LS, :VIAF_LS .
+
+:Distribution a dcat:Distribution ;
+  dcat:accessURL <http://oai.europeana.eu/oaicat> ; .
+
+# Target vocabularies used as EDM Context objects or enrichments
+
+<http://dbpedia.org/void/Dataset> a void:Dataset;
+  void:uriSpace "http://dbpedia.org/resource/";
+  void:uriRegexPattern "^http://([a-z]{2-3}\\.)?dbpedia\\.org/resource/"; .
+
+<http://download.geonames.org/export/dump/> a void:Dataset ;
+  void:uriSpace "http://sws.geonames.org/" ;
+  void:uriRegexPattern "^http://sws.geonames.org/\\d+" .
+
+<http://vocab.getty.edu/dataset/aat> a void:Dataset ;
+  void:uriSpace "http://vocab.getty.edu/aat/" ;
+  void:uriRegexPattern "^http://vocab.getty.edu/aat/\\d+" .
+
+<http://viaf.org/viaf/data/> a void:Dataset ;
+  void:uriSpace "http://viaf.org/viaf/" ;
+  void:uriRegexPattern "^http://viaf.org/viaf/\\d+" .
+
+# Linksets to the target vocabularies used as EDM Context objects or enrichments
+
+:DBPediaLS a void:LinkSet ;
+  void:subjectsTarget <http://data.europeana.eu/> ;
+  void:objectsTarget <http://dbpedia.org/void/Dataset> ;
+  void:linkPredicate dc:subject, dc:type, dc:creator, dc:contributor ;
+  void:triples "TODO" .
+
+:GeonamesLS a void:LinkSet ;
+  void:subjectsTarget <http://data.europeana.eu/> ;
+  void:objectsTarget <http://download.geonames.org/export/dump/> ;
+  void:linkPredicate dct:spatial, dc:coverage;
+  void:triples "TODO" .
+
+:AAT_LS a void:LinkSet ;
+  void:subjectsTarget <http://data.europeana.eu/> ;
+  void:objectsTarget <http://vocab.getty.edu/dataset/aat> ;
+  void:linkPredicate dc:subject, dc:type ;
+  void:triples "TODO" .
+
+:VIAF_LS a void:LinkSet ;
+  void:subjectsTarget <http://data.europeana.eu/> ;
+  void:objectsTarget <http://viaf.org/viaf/data/> ;
+  void:linkPredicate dc:subject, dc:creator, dc:contributor ;
+  void:triples "TODO" .
