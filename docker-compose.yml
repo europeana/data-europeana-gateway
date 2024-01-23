@@ -1,7 +1,7 @@
 version: "3"
 services:
   nginx:
-    image: data-europeana-gateway
+    image: data-gateway
     build:
       context: .
     env_file: ./docker/.env.docker

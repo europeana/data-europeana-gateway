@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: data-europeana-gateway-deployment
+  name: data-gateway-deployment
 spec:
 # selector.matchLabels provided via Kustomize
   template:
     spec:
       containers:
-        - name: data-europeana-gateway
-          image: europeana/data-europeana-gateway
+        - name: data-gateway
+          image: europeana/data-gateway
           ports:
             - containerPort: 80
           livenessProbe:
@@ -25,5 +25,5 @@ spec:
             periodSeconds: 5
           envFrom:
             - configMapRef:
-                name: data-europeana-gateway-config
+                name: data-gateway-config
 

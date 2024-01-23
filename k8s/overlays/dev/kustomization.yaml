@@ -9,4 +9,4 @@ patchesStrategicMerge:
   - deployment_patch.yaml
 
 commonLabels:
-  app: data-europeana-gateway-dev
+  app: data-gateway-dev

@@ -3,6 +3,6 @@ resources:
 
 # expects file to be in the same directory
 configMapGenerator:
-  - name: data-europeana-gateway-config
+  - name: data-gateway-config
     envs:
       - .env
