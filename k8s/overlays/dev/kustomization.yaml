@@ -5,8 +5,10 @@ resources:
   - ../../base
   - nodeport.yaml
 
-patchesStrategicMerge:
-  - deployment_patch.yaml
+patches:
+  - path: deployment_patch.yaml
 
-commonLabels:
-  app: data-gateway-dev
+labels:
+  - includeSelectors: true
+    pairs:
+      app: data-gateway-dev
