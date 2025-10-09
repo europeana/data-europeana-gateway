@@ -8,5 +8,6 @@
     <edm:resolvablePattern>https://hdl.handle.net/${0}</edm:resolvablePattern>
     <edm:matchingPattern>https?://hdl\.handle\.net/([0-9][\.0-9]*/.*)</edm:matchingPattern>
     <edm:matchingPattern>hdl:([0-9][\.0-9]*/.*)</edm:matchingPattern>
+    <edm:matchingPattern>info:hdl:([0-9][\.0-9]*/.*)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>

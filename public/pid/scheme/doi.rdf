@@ -7,6 +7,7 @@
     <edm:canonicalPattern>doi:${1}/${2}</edm:canonicalPattern>
     <edm:resolvablePattern>https://doi.org/${0}</edm:resolvablePattern>
     <edm:matchingPattern>doi:(10\.[0-9][0-9\.]*)/(.*)</edm:matchingPattern>
+    <edm:matchingPattern>info:doi:(10\.[0-9][0-9\.]*)/(.*)</edm:matchingPattern>
     <edm:matchingPattern>https?://doi\.org/doi:(10\.[0-9][0-9\.]*)/(.*)</edm:matchingPattern>
     <edm:matchingPattern>https?://dx\.doi\.org/doi:(10\.[0-9][0-9\.]*)/(.*)</edm:matchingPattern>
     <edm:matchingPattern>https?://doi\.org/(10\.[0-9][0-9\.]*)/(.*)</edm:matchingPattern>
