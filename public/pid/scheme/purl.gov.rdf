@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:rdfs="https://www.w3.org/TR/rdf-schema/#">
-  <edm:PersistentIdentifierScheme rdf:about="http://data.europeana.eu/pid/scheme/purl.gov">
+  <edm:PersistentIdentifierScheme rdf:about="http://data.europeana.eu/pid/scheme/purl:gov">
     <dcterms:title>Federal Depository Library Program</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <rdfs:seeAlso rdf:resource="https://purl.access.gpo.gov/"/>
