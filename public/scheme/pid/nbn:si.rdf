@@ -5,6 +5,6 @@
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>http://www.dlib.si/?URN=${0}</edm:resolvablePattern>
     <edm:matchingPattern>(urn:nbn:si[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://www.dlib.si/\?URN=(urn:nbn:si[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.dlib\.si/\?URN=(urn:nbn:si[:-].+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
