@@ -4,8 +4,9 @@ daemon off;
 error_log stderr warn;
 
 events {
-    use epoll;
-    worker_connections 1024;
+    # For deployment in Kubernetes we should always "use epoll" (most efficient). Optionally you can disable it for local testing.
+    ${USE_EPOLL};
+    worker_connections ${WORKER_CONNECTIONS};
     multi_accept on;
 }
 
@@ -28,7 +29,7 @@ http {
     map $http_accept $format {
         "~*(text/html|application/xhtml\+xml)"                      "html";
         "~*(application/rdf\+xml|rdf/xml|application/xml|text/xml)" "rdf";
-#        "~*(application/json)"                                      "json";
+#        "~*(application/json)"                                     "json";
         "~*(application/ld\+json|application/json)"                 "jsonld";
         "~*(text/turtle|application/turtle|application/x-turtle)"   "ttl";
         "~*(text/n3|text/rdf\+n3|application/n3)"                   "n3";
@@ -41,9 +42,9 @@ http {
     }
 
     server {
-        listen 80 default_server;
+        listen ${PORT} default_server;
         server_name ${DATA_HOST};
-        root /usr/share/nginx/html/;
+        root ${PUBLIC_FOLDER};
         index index.html;
 
         # "upstream" servers do not use resolver settings by default (paid option),
@@ -94,6 +95,15 @@ http {
 
 
         ########################################
+        # Negotiation for PID                  #
+        ########################################
+
+        # static rdf files to handle PID schemes are served in $PUBLIC_FOLDER/scheme/pid/...
+        location ~* ^/scheme/pid {
+            try_files $uri $uri.rdf = 404;
+        }
+
+        ########################################
         # Negotiation for OpenSKOS             #
         ########################################
 
@@ -103,7 +113,7 @@ http {
         #    rewrite /concept/[loc|soundgenres](.*)$ /concept/[loc|soundgenres]$1 permanent;
         # }
 
-        # static files for Openskos requests are served in $WEBROOT/...
+        # static files for Openskos requests are served in $PUBLIC_FOLDER/...
         location ~* ^/concept/[loc|soundgenres] {
             try_files $uri $uri.rdf = 404;
         }
@@ -112,7 +122,7 @@ http {
         # EDM Vocabulary                       #
         ########################################
 
-        # Host EDM vocabulary in the $WEBROOT/vocabulary/...
+        # Host EDM vocabulary in the $PUBLIC_FOLDER/vocabulary/...
         location ~* ^/vocabulary/role/ {
             try_files /vocabulary/role.rdf = 404;
         }

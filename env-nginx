@@ -2,6 +2,12 @@
 
 # Substitute env var strings in NGINX config with values from env
 
+export USE_EPOLL='use epoll'
+export WORKER_CONNECTIONS=1024
+export PORT='80'
+export PUBLIC_FOLDER='/usr/share/nginx/html'
+
+
 # Also use default nameserver for resolving hostnames (necessary for k8s deployments so we can use service names)
 NAMESERVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{print $2}' | tr '\n' ' ')
 export RESOLVER_SETTINGS="${NAMESERVER} ${RESOLVER_SETTINGS}"
@@ -19,7 +25,11 @@ vars='$RECORD_API_HOST
       $RESOLVER_SETTINGS
       $ROOT_REDIRECT_URL
       $DATA_HOST
-      $API_KEY'
+      $API_KEY
+      $USE_EPOLL
+      $WORKER_CONNECTIONS
+      $PORT
+      PUBLIC_FOLDER'
 
 envsubst "${vars}" < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
