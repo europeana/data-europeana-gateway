@@ -29,7 +29,7 @@ vars='$RECORD_API_HOST
       $USE_EPOLL
       $WORKER_CONNECTIONS
       $PORT
-      PUBLIC_FOLDER'
+      $PUBLIC_FOLDER'
 
 envsubst "${vars}" < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
