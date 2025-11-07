@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rdf:RDF xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+  <skos:ConceptScheme rdf:about="http://data.europeana.eu/vocabulary/usageArea/">
+    <skos:prefLabel xml:lang="en">Usage Area</skos:prefLabel>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Knowledge">
+    <skos:prefLabel xml:lang="en">Knowledge</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Research">
+    <skos:prefLabel xml:lang="en">Research</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Knowledge"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Education">
+    <skos:prefLabel xml:lang="en">Education</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Knowledge"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Infotainment">
+    <skos:prefLabel xml:lang="en">Infotainment</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+  </skos:Concept>
+  
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Tourism">
+    <skos:prefLabel xml:lang="en">Tourism</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Infotainment"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Gaming">
+    <skos:prefLabel xml:lang="en">Gaming</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Infotainment"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Exhibition">
+    <skos:prefLabel xml:lang="en">Exhibition</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Infotainment"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Creativity">
+    <skos:prefLabel xml:lang="en">Creativity</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Design">
+    <skos:prefLabel xml:lang="en">Design</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Creativity"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Art">
+    <skos:prefLabel xml:lang="en">Art</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Creativity"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Curation">
+    <skos:prefLabel xml:lang="en">Curation</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Maintenance">
+    <skos:prefLabel xml:lang="en">Maintenance</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Curation"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Restoration">
+    <skos:prefLabel xml:lang="en">Restoration</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Curation"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Documentation">
+    <skos:prefLabel xml:lang="en">Documentation</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:broader rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Curation"/>
+  </skos:Concept>
+
+</rdf:RDF> 
