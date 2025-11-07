@@ -9,6 +9,8 @@
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Knowledge">
     <skos:prefLabel xml:lang="en">Knowledge</skos:prefLabel>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Research"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Education"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Research">
@@ -26,6 +28,9 @@
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Infotainment">
     <skos:prefLabel xml:lang="en">Infotainment</skos:prefLabel>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Tourism"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Gaming"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Exhibition"/>
   </skos:Concept>
   
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Tourism">
@@ -49,6 +54,8 @@
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Creativity">
     <skos:prefLabel xml:lang="en">Creativity</skos:prefLabel>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Design"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Art"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Design">
@@ -66,6 +73,9 @@
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Curation">
     <skos:prefLabel xml:lang="en">Curation</skos:prefLabel>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/usageArea/"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Maintenance"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Restoration"/>
+    <skos:narrower rdf:resource="http://data.europeana.eu/vocabulary/usageArea/Documentation"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/usageArea/Maintenance">
