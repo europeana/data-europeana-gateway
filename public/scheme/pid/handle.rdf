@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:rdfs="https://www.w3.org/TR/rdf-schema/#">
+  <edm:PersistentIdentifierScheme rdf:about="http://data.europeana.eu/scheme/pid/handle">
+    <dcterms:title>Handle System</dcterms:title>
+    <rdfs:seeAlso rdf:resource="https://www.dona.net/prefix/resolve"/>
+    <doap:maintainer>DONA Foundation</doap:maintainer>
+    <edm:canonicalPattern>hdl:${1}</edm:canonicalPattern>
+    <edm:resolvablePattern>https://hdl.handle.net/${0}</edm:resolvablePattern>
+    <edm:matchingPattern>https?://hdl\.handle\.net/([0-9][\.0-9]*/.*)</edm:matchingPattern>
+    <edm:matchingPattern>hdl:([0-9][\.0-9]*/.*)</edm:matchingPattern>
+    <edm:matchingPattern>info:hdl:([0-9][\.0-9]*/.*)</edm:matchingPattern>
+  </edm:PersistentIdentifierScheme>
+</rdf:RDF>
