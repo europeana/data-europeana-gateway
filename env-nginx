@@ -24,8 +24,9 @@ vars='$RECORD_API_HOST
 envsubst "${vars}" < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 if [ -z "$1" ]; then
-      echo "No container params. Running default nginx command"
+      echo "No parameters given, I'll just start up nginx in vanilla mode."
       nginx
 else
+      echo "$@? Very well."
       exec "$@"
 fi

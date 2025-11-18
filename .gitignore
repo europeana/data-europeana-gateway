@@ -1,7 +1,8 @@
 /manifest.yml
 .env
-.env
 !.env.example
+env-nginx-local
+nginx.conf
 
 #IntelliJ project files
 .idea
