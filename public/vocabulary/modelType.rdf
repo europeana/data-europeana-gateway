@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rdf:RDF xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+  <skos:ConceptScheme rdf:about="http://data.europeana.eu/vocabulary/modelType/">
+    <skos:prefLabel xml:lang="en">Model Type</skos:prefLabel>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/modelType/3DMesh">
+    <skos:prefLabel xml:lang="en">3D Mesh</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/modelType/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/modelType/3DPointCloud">
+    <skos:prefLabel xml:lang="en">3D Point Cloud</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/modelType/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/modelType/BIM">
+    <skos:prefLabel xml:lang="en">Building Information Model</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/modelType/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/modelType/parametric3DModel">
+    <skos:prefLabel xml:lang="en">Parametric 3D Model</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/modelType/"/>
+  </skos:Concept>
+
+</rdf:RDF> 
