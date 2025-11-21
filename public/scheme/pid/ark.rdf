@@ -6,9 +6,9 @@
     <doap:maintainer>ARK Alliance</doap:maintainer>
     <edm:canonicalPattern>ark:${1}${2}${3}</edm:canonicalPattern>
     <edm:resolvablePattern>https://n2t.net/${0}</edm:resolvablePattern>
-    <edm:matchingPattern>https?://ark\.bnf\.fr/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]+)?</edm:matchingPattern>
-    <edm:matchingPattern>https?://gallica\.bnf\.fr/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]+)?</edm:matchingPattern>
-    <edm:matchingPattern>https?://catalogue\.bnf\.fr/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]+)?</edm:matchingPattern>
+    <edm:matchingPattern>https?://ark\.bnf\.fr/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]*)?</edm:matchingPattern>
+    <edm:matchingPattern>https?://gallica\.bnf\.fr/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]*)?</edm:matchingPattern>
+    <edm:matchingPattern>https?://catalogue\.bnf\.fr/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]*)?</edm:matchingPattern>
     <edm:matchingPattern>https?://n2t\.net/ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]+)?</edm:matchingPattern>
     <edm:matchingPattern>ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]+)?</edm:matchingPattern>
     <edm:matchingPattern>info:ark:(/?[0-9]+)(/[a-z0-9=~\*\+@_$%\-]+)(/[a-z0-9=~\*\+@_$%\-/\.]+)?</edm:matchingPattern>
