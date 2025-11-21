@@ -7,6 +7,8 @@
     <edm:matchingPattern>(urn:nbn:at[:-].*)</edm:matchingPattern>
     <edm:matchingPattern>https?://resolver\.obvsg\.at/(urn:nbn:at[:-].+)</edm:matchingPattern>
     <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:at[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:at[:-].+)</edm:matchingPattern>
     <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:at[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:at[:-].+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
