@@ -5,7 +5,9 @@
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://nbn-resolving.org/${0}</edm:resolvablePattern>
     <edm:matchingPattern>(urn:nbn:ch[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://nbn-resolving.org/(urn:nbn:ch[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://www\.nbn-resolving.org/(urn:nbn:ch[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:ch[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:ch[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:ch[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:ch[:-].+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
