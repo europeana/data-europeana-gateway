@@ -8,5 +8,7 @@
     <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:de:.+)</edm:matchingPattern>
     <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:de:.+)</edm:matchingPattern>
     <edm:matchingPattern>https?://mdz-nbn-resolving\.de/(urn:nbn:de:.+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:de:.+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:de:.+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
