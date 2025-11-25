@@ -5,6 +5,6 @@
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <rdfs:seeAlso rdf:resource="https://purl.access.gpo.gov/"/>
     <doap:maintainer>U.S. Government Publishing Office</doap:maintainer>
-    <edm:matchingPattern>(https?://purl\.access\.gpo\.gov/.+)</edm:matchingPattern>
+    <edm:matchingPattern>(https?://purl\.access\.gpo\.gov/\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
