@@ -5,10 +5,10 @@
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://resolver.obvsg.at/${0}</edm:resolvablePattern>
     <edm:matchingPattern>(urn:nbn:at[:-].*)</edm:matchingPattern>
-    <edm:matchingPattern>https?://resolver\.obvsg\.at/(urn:nbn:at[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:at[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:at[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:at[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:at[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://resolver\.obvsg\.at/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
