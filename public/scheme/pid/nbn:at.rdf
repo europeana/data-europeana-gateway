@@ -4,7 +4,7 @@
     <dcterms:title>URN:NBN:AT</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://resolver.obvsg.at/${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:at[:-].*)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:at[:-]\S+)</edm:matchingPattern>
     <edm:matchingPattern>https?://resolver\.obvsg\.at/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
     <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
     <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:at[:-]\S+)</edm:matchingPattern>
