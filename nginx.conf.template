@@ -99,7 +99,7 @@ http {
         ########################################
 
         # static rdf files to handle PID schemes are served in $PUBLIC_FOLDER/scheme/pid/...
-        location ~* ^/scheme/pid {
+        location ~ ^/scheme/pid {
             try_files $uri $uri.rdf = 404;
         }
 
@@ -107,23 +107,18 @@ http {
         # EDM & 3D Vocabulary                  #
         ########################################
 
-        # Host EDM $ 3D vocabulary in the $PUBLIC_FOLDER/vocabulary/...
-        location ~* ^/vocabulary {
-            try_files $uri $uri.rdf = 404;
+        # Host EDM $ 3D vocabulary in the /usr/local/etc/nginx/public/vocabulary/...
+
+        location ~ /vocabulary/(usageArea|modelType|role) {
+            try_files $uri /vocabulary/$1.rdf;
         }
 
         ########################################
         # OpenSKOS                             #
         ########################################
 
-        # this might help to make it case insensitive
-        # location ~* ^/concept/[loc|soundgenres] {
-        #    root /usr/local/etc/nginx/public/openskos;
-        #    rewrite /concept/[loc|soundgenres](.*)$ /concept/[loc|soundgenres]$1 permanent;
-        # }
-
         # static files for Openskos requests are served in $PUBLIC_FOLDER/...
-        location ~* ^/concept/[loc|soundgenres] {
+        location ~ ^/concept/loc|soundgenres {
             try_files $uri $uri.rdf = 404;
         }
 
@@ -131,8 +126,8 @@ http {
         # Negotiation for .well-known/void     #
         ########################################
 
-        # Processing the .well-known/void request required testing for two conditions, which is quite hard to do in
-        # NGINX because has very limited support for IF's and does not allow any boolean logic at all.
+        # Processing the .well-known/void request requires testing two conditions using
+        # boolean logic. This requires a hack because NGINX does not allow this directly.
         # The hack below is a way around that limitation: if the request is for "/" or "/.well-known/void", set
         # variable $voidtest to value 'A'. Then, if it is a Turtle request, add 'B' to the value of $voidtest:
         # 'A' => 'AB';  similarly, when it's a HTML request: 'A' => 'AC'.
@@ -172,7 +167,7 @@ http {
         # Negotiation for Record API           #
         ########################################################################################
         # please note that rewrite needs http(s) or $scheme to not enter into an infinite loop #
-        # also, adding "redirect" after a rewrite is not needed, it redirects by default       #
+        # also, adding "redirect" after a rewrite is not needed, it redirects by defailt       #
         ########################################################################################
 
         # step 1: capture all Record patterns and rewrite them in a uniform way as /path/$2 ($2 has Item ID)
@@ -220,7 +215,7 @@ http {
         }
 
         ### Organisation ###
-        location ~* ^\/(organi[s|z]ation)\/(?<entityid>.*) {
+        location ~* ^\/(organi[sz]ation)\/(?<entityid>.*) {
             # JSON JSON-LD RDF
             if ($include_apikey = 1){
                 return 303 https://$entity_api/organization/$entityid?wskey=$apikey;
