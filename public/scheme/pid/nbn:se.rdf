@@ -4,7 +4,11 @@
     <dcterms:title>URN:NBN:SE</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://urn.kb.se/resolve?urn=${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:se[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://urn\.kb\.se/resolve\?urn=(urn:nbn:se[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:se[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://urn\.kb\.se/resolve\?urn=(urn:nbn:se[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:se:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:se:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:se:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:se:\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>

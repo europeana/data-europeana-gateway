@@ -4,7 +4,7 @@
     <dcterms:title>URN:NBN:HR</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://urn.nsk.hr/${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:hr[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://urn\.nsk\.hr/(urn:nbn:hr[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:hr[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://urn\.nsk\.hr/(urn:nbn:hr[:-]\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>

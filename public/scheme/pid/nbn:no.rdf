@@ -4,7 +4,7 @@
     <dcterms:title>URN:NBN:NO</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://urn.nb.no/${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:no[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://urn\.nb\.no/(urn:nbn:no[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:no[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://urn\.nb\.no/(urn:nbn:no[:-]\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>

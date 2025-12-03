@@ -4,7 +4,7 @@
     <dcterms:title>URN:NBN:SK</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://nbn.sk/urn_resolver.html?nid=${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:sk[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://nbn\.sk/(urn:nbn:sk[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:sk[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn\.sk/(urn:nbn:sk[:-]\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>

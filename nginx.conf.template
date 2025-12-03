@@ -172,7 +172,7 @@ http {
         # Negotiation for Record API           #
         ########################################################################################
         # please note that rewrite needs http(s) or $scheme to not enter into an infinite loop #
-        # also, adding "redirect" after a rewrite is not needed, it redirects by defailt       #
+        # also, adding "redirect" after a rewrite is not needed, it redirects by default       #
         ########################################################################################
 
         # step 1: capture all Record patterns and rewrite them in a uniform way as /path/$2 ($2 has Item ID)

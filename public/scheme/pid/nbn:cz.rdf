@@ -4,7 +4,7 @@
     <dcterms:title>URN:NBN:CZ</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://resolver.nkp.cz/${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:cz[:-].+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://resolver\.nkp\.cz/(urn:nbn:cz[:-].+)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:cz[:-]\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://resolver\.nkp\.cz/(urn:nbn:cz[:-]\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
