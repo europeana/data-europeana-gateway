@@ -5,7 +5,7 @@
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <rdfs:seeAlso rdf:resource="https://purl.archive.org/"/>
     <doap:maintainer>Internet Archive</doap:maintainer>
-    <edm:matchingPattern>(https?://purl\.org/.+)</edm:matchingPattern>
-    <edm:matchingPattern>(https?://www\.purl\.org/.+)</edm:matchingPattern>
+    <edm:matchingPattern>(https?://purl\.org/\S+)</edm:matchingPattern>
+    <edm:matchingPattern>(https?://www\.purl\.org/\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>

@@ -9,7 +9,7 @@
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/role/ProvidingInstitution">
     <skos:prefLabel xml:lang="en">Providing Institution</skos:prefLabel>
-    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/role/"/>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/role"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/role/Aggregator">

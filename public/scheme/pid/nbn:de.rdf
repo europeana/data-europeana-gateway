@@ -4,9 +4,11 @@
     <dcterms:title>URN:NBN:DE</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
     <edm:resolvablePattern>https://nbn-resolving.org/${0}</edm:resolvablePattern>
-    <edm:matchingPattern>(urn:nbn:de:.*)</edm:matchingPattern>
-    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:de:.+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:de:.+)</edm:matchingPattern>
-    <edm:matchingPattern>https?://mdz-nbn-resolving\.de/(urn:nbn:de:.+)</edm:matchingPattern>
+    <edm:matchingPattern>(urn:nbn:de:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.de/(urn:nbn:de:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.de/(urn:nbn:de:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://mdz-nbn-resolving\.de/(urn:nbn:de:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://www\.nbn-resolving\.org/(urn:nbn:de:\S+)</edm:matchingPattern>
+    <edm:matchingPattern>https?://nbn-resolving\.org/(urn:nbn:de:\S+)</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
