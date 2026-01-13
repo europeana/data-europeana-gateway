@@ -104,13 +104,13 @@ http {
         }
 
         ########################################
-        # EDM & 3D Vocabulary                  #
+        # EDM, 3D & Tombstone Vocabulary       #
         ########################################
 
-        # Host EDM $ 3D vocabulary in the /usr/local/etc/nginx/public/vocabulary/...
+        # Host EDM, 3D & Tombstone vocabulary in /usr/local/etc/nginx/public/vocabulary/...
 
-        location ~ /vocabulary/(usageArea|modelType|role) {
-            try_files $uri /vocabulary/$1.rdf;
+        location ~ /vocabulary/(usageArea|modelType|role|depublicationReason) {
+            try_files $uri /vocabulary/$1.rdf = 404;
         }
 
         ########################################
