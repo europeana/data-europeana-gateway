@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:rdfs="https://www.w3.org/TR/rdf-schema/#">
+  <edm:PersistentIdentifierScheme rdf:about="http://data.europeana.eu/scheme/pid/purl:hr">
+    <dcterms:title>PURL service of eKultura.hr</dcterms:title>
+    <edm:canonicalPattern>${1}</edm:canonicalPattern>
+    <doap:maintainer>Ministry of Culture and Media -- Republic of Croatia</doap:maintainer>
+    <edm:matchingPattern>(https?://ekultura.hr/purl/url/\S+)</edm:matchingPattern>
+  </edm:PersistentIdentifierScheme>
+</rdf:RDF>
