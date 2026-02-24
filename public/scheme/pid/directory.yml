@@ -1,18 +1,19 @@
-pid: ark.rdf
-pid: doi.rdf
-pid: handle.rdf
-pid: nbn:at.rdf
-pid: nbn:ch.rdf
-pid: nbn:cz.rdf
-pid: nbn:de.rdf
-pid: nbn:fi.rdf
-pid: nbn:hr.rdf
-pid: nbn:it.rdf
-pid: nbn:nl.rdf
-pid: nbn:no.rdf
-pid: nbn:se.rdf
-pid: nbn:si.rdf
-pid: nbn:sk.rdf
-pid: purl:gov.rdf
-pid: purl:org.rdf
-pid: purl:pt.rdf
+pid: 
+  - ark.rdf
+  - doi.rdf
+  - handle.rdf
+  - nbn:at.rdf
+  - nbn:ch.rdf
+  - nbn:cz.rdf
+  - nbn:de.rdf
+  - nbn:fi.rdf
+  - nbn:hr.rdf
+  - nbn:it.rdf
+  - nbn:nl.rdf
+  - nbn:no.rdf
+  - nbn:se.rdf
+  - nbn:si.rdf
+  - nbn:sk.rdf
+  - purl:gov.rdf
+  - purl:org.rdf
+  - purl:pt.rdf
