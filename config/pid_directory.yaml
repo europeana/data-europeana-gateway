@@ -1,0 +1,19 @@
+pid: 
+  - /public/scheme/pid/ark.rdf
+  - /public/scheme/pid/doi.rdf
+  - /public/scheme/pid/handle.rdf
+  - /public/scheme/pid/nbn:at.rdf
+  - /public/scheme/pid/nbn:ch.rdf
+  - /public/scheme/pid/nbn:cz.rdf
+  - /public/scheme/pid/nbn:de.rdf
+  - /public/scheme/pid/nbn:fi.rdf
+  - /public/scheme/pid/nbn:hr.rdf
+  - /public/scheme/pid/nbn:it.rdf
+  - /public/scheme/pid/nbn:nl.rdf
+  - /public/scheme/pid/nbn:no.rdf
+  - /public/scheme/pid/nbn:se.rdf
+  - /public/scheme/pid/nbn:si.rdf
+  - /public/scheme/pid/nbn:sk.rdf
+  - /public/scheme/pid/purl:gov.rdf
+  - /public/scheme/pid/purl:org.rdf
+  - /public/scheme/pid/purl:pt.rdf
