@@ -1,0 +1,19 @@
+pid: 
+  - ark.rdf
+  - doi.rdf
+  - handle.rdf
+  - nbn:at.rdf
+  - nbn:ch.rdf
+  - nbn:cz.rdf
+  - nbn:de.rdf
+  - nbn:fi.rdf
+  - nbn:hr.rdf
+  - nbn:it.rdf
+  - nbn:nl.rdf
+  - nbn:no.rdf
+  - nbn:se.rdf
+  - nbn:si.rdf
+  - nbn:sk.rdf
+  - purl:gov.rdf
+  - purl:org.rdf
+  - purl:pt.rdf
