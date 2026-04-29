@@ -26,4 +26,9 @@
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/modelType/"/>
   </skos:Concept>
 
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/modelType/3DGaussianSplatting">
+    <skos:prefLabel xml:lang="en">3D Gaussian Splatting</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/modelType/"/>
+  </skos:Concept>
+
 </rdf:RDF> 
