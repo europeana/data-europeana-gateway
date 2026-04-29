@@ -29,7 +29,7 @@ http {
     map $http_accept $format {
         "~*(text/html|application/xhtml\+xml)"                      "html";
         "~*(application/rdf\+xml|rdf/xml|application/xml|text/xml)" "rdf";
-#        "~*(application/json)"                                      "json";
+#        "~*(application/json)"                                     "json";
         "~*(application/ld\+json|application/json)"                 "jsonld";
         "~*(text/turtle|application/turtle|application/x-turtle)"   "ttl";
         "~*(text/n3|text/rdf\+n3|application/n3)"                   "n3";
@@ -95,14 +95,14 @@ http {
 
 
         ########################################
-        # PID                                  #
+        # Negotiation for PID                  #
         ########################################
 
         # static rdf files to handle PID schemes are served in $PUBLIC_FOLDER/scheme/pid/...
-        location ~ ^/scheme/pid {
+        location ~* ^/scheme/pid {
             try_files $uri $uri.rdf = 404;
         }
-
+        
         ########################################
         # EDM & 3D Vocabulary                  #
         ########################################
