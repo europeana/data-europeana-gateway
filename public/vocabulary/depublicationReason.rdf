@@ -6,39 +6,45 @@
     <skos:prefLabel xml:lang="en">Reason for depublication in Europeana</skos:prefLabel>
   </skos:ConceptScheme>
 
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/brokenLinks">
+    <skos:prefLabel xml:lang="en">Broken media links</skos:prefLabel>
+    <skos:note xml:lang="en">The record has been removed as broken media links have been identified, specifically because content provided by a cultural heritage institution is no longer available online.</skos:note>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
+  </skos:Concept>
+
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/gdpr">
-    <skos:prefLabel xml:lang="en">GDPR</skos:prefLabel>
-    <skos:note xml:lang="en">The content has been removed because of privacy issues, e.g., the name of a person is mentioned in the title, or a person is on an image without having given consent</skos:note>
+    <skos:prefLabel xml:lang="en">General Data Protection Regulation (GDPR)</skos:prefLabel>
+    <skos:note xml:lang="en">The record has been removed due to privacy concerns, for example containing a person's name or an image of a person without proper consent.</skos:note>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/noPermission">
-    <skos:prefLabel xml:lang="en">Publication not permitted</skos:prefLabel>
-    <skos:note xml:lang="en">The content has been removed because providers do not have the permission to publish the content. Copyright aspects or ownership of collections may play a role here. NB: this is distinct from GDPR restrictions.</skos:note>
+    <skos:prefLabel xml:lang="en">Permission issues</skos:prefLabel>
+    <skos:note xml:lang="en">The record has been removed because the provider does not have the necessary permissions for publication, for example due to copyright restrictions or ownership concerns. This reason covers non-GDPR issues.</skos:note>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/sensitiveContent">
-    <skos:prefLabel xml:lang="en">Sensitive content</skos:prefLabel>
-    <skos:note xml:lang="en">The content has been removed because it is sensitive, e.g., use of an inappropriate language in metadata, or content not being appropriate.</skos:note>
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/contentious">
+    <skos:prefLabel xml:lang="en">Contentious material</skos:prefLabel>
+    <skos:note xml:lang="en">The record has been removed because it contains language or material that is considered harmful, offensive, biased or otherwise inappropriate.</skos:note>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/sourceRemoval">
+    <skos:prefLabel xml:lang="en">Data removed at source</skos:prefLabel>
+    <skos:note xml:lang="en">The provider removed the record, so it is no longer included in the updated dataset. This is not an active depublishing action on the data space side but a result of reprocessing. </skos:note>
+    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/contentTier0">
+    <skos:prefLabel xml:lang="en">Low-quality content</skos:prefLabel>
+    <skos:note xml:lang="en">The record has been removed because it contains low-quality ("tier 0") content, which does not comply with the criteria of the Europeana Publishing Framework and is no longer displayed by default.</skos:note>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/generic">
     <skos:prefLabel xml:lang="en">Generic reason</skos:prefLabel>
-    <skos:note xml:lang="en">Reasons not covered by any of the other cases where depublication needs to happen.</skos:note>
-    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
-  </skos:Concept>
-
-  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/sourceRemoval">
-    <skos:prefLabel xml:lang="en">CHI / aggregator removes data at source</skos:prefLabel>
-    <skos:note xml:lang="en">The content has been removed by the provider so that after an update of a dataset, the content is not available any longer. This may involve some other reasons.</skos:note>
-    <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
-  </skos:Concept>
-
-  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/contentTier0">
-    <skos:prefLabel xml:lang="en">Tier 0 content</skos:prefLabel>
-    <skos:note xml:lang="en">Items with tier 0 content, according to the Europeana Publishing Framework, which are no longer indexed to publish.</skos:note>
+    <skos:note xml:lang="en">The record has been removed for reasons not related to broken media links, GDPR, permission issues, contentious material, removal at source or low-quality content.</skos:note>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
   </skos:Concept>
 
