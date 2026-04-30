@@ -3,7 +3,7 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:skos="http://www.w3.org/2004/02/skos/core#" > 
-  <rdf:Description rdf:about="http://data.europeana.eu/concept/soundgenres/soundgenres/Spoken_word_recordings/Spoken_word_performance_recordings">
+  <rdf:Description rdf:about="http://data.europeana.eu/concept/soundgenres/Spoken_word_recordings/Spoken_word_performance_recordings">
     <skos:prefLabel xml:lang="de">Tonaufnahmen von Aufführungen von gesprochenen Worten</skos:prefLabel>
     <skos:note xml:lang="en">Recordings of spoken word performances, for example readings of poems.</skos:note>
     <skos:inScheme rdf:resource="http://data.europeana.eu/concept/soundgenres"/>
