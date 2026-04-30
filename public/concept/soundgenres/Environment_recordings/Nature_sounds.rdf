@@ -3,7 +3,7 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:skos="http://www.w3.org/2004/02/skos/core#" > 
-  <rdf:Description rdf:about="http://data.europeana.eu/concept/soundgenres/soundgenres/Environment_recordings/Nature_sounds">
+  <rdf:Description rdf:about="http://data.europeana.eu/concept/soundgenres/Environment_recordings/Nature_sounds">
     <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
     <skos:notation>4367</skos:notation>
     <skos:prefLabel xml:lang="de">Naturgeräusche</skos:prefLabel>
