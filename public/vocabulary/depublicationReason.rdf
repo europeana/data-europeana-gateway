@@ -36,7 +36,7 @@
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/contentTier0">
+  <skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/lowQuality">
     <skos:prefLabel xml:lang="en">Low-quality content</skos:prefLabel>
     <skos:note xml:lang="en">The record has been removed because it contains low-quality ("tier 0") content, which does not comply with the criteria of the Europeana Publishing Framework and is no longer displayed by default.</skos:note>
     <skos:inScheme rdf:resource="http://data.europeana.eu/vocabulary/depublicationReason/"/>
