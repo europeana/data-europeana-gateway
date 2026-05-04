@@ -3,7 +3,7 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:skos="http://www.w3.org/2004/02/skos/core#" > 
-  <rdf:Description rdf:about="http://data.europeana.eu/concept/soundgenres/soundgenres/Spoken_word_recordings/Language_and_dialect_recordings">
+  <rdf:Description rdf:about="http://data.europeana.eu/concept/soundgenres/Spoken_word_recordings/Language_and_dialect_recordings">
     <skos:broader rdf:resource="http://data.europeana.eu/concept/soundgenres/Spoken_word_recordings"/>
     <skos:note xml:lang="en">Recordings of languages, dialects and accents from around the world.</skos:note>
     <skos:notation>4364</skos:notation>
