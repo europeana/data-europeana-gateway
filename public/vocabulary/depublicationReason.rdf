@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rdf:RDF xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/">
 	<skos:ConceptScheme rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/">
-		<dcterms:title xml:lang="en">Reason for depublication of a record in the Europeana dataset</dcterms:title>
+		<dcterms:title xml:lang="en">Reasons for depublication of a record in the Europeana dataset</dcterms:title>
 	</skos:ConceptScheme>
 	<skos:Concept rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/brokenMediaLinks">
 		<skos:prefLabel xml:lang="en">Broken media links</skos:prefLabel>
