@@ -11,7 +11,7 @@
     <edm:matchingPattern>https?://catalogue\.bnf\.fr/ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)</edm:matchingPattern>
     <edm:matchingPattern>https?://www\.numistral\.fr/ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)</edm:matchingPattern>
     <edm:matchingPattern>https?://n2t\.net/ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)</edm:matchingPattern>
-    <edm:matchingPattern>ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)</edm:matchingPattern>
-    <edm:matchingPattern>info:ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)</edm:matchingPattern>
+    <edm:matchingPattern>^ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)$</edm:matchingPattern>
+    <edm:matchingPattern>^info:ark:(/?\d+/[a-z0-9=~*+@_$%-]+(?:/[a-z0-9=~*+@_$%-]+)*(?:\.[a-z0-9=~*+@_$%-]+)*)$</edm:matchingPattern>
   </edm:PersistentIdentifierScheme>
 </rdf:RDF>
