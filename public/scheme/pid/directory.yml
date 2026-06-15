@@ -1,5 +1,6 @@
 pid: 
   - ark.rdf
+  - cetaf.rdf
   - doi.rdf
   - handle.rdf
   - nbn:at.rdf
@@ -15,5 +16,6 @@ pid:
   - nbn:si.rdf
   - nbn:sk.rdf
   - purl:gov.rdf
+  - purl:hr.rdf
   - purl:org.rdf
   - purl:pt.rdf
