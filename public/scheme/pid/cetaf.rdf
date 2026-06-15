@@ -3,7 +3,7 @@
   <edm:PersistentIdentifierScheme rdf:about="http://data.europeana.eu/scheme/pid/cetaf">
     <dcterms:title>CETAF Stable Identifier</dcterms:title>
     <edm:canonicalPattern>${1}</edm:canonicalPattern>
-    <doap:maintainer>CETAF Information Science & Technology Commission</doap:maintainer>
+    <doap:maintainer>CETAF Information Science and Technology Commission</doap:maintainer>
     <edm:matchingPattern>(https?://www.antweb.org/specimen/\S+)</edm:matchingPattern>
     <edm:matchingPattern>(https?://herbarium.bgbm.org/object/\S+)</edm:matchingPattern>
     <edm:matchingPattern>(https?://www.botanicalcollections.be/specimen/\S+)</edm:matchingPattern>
