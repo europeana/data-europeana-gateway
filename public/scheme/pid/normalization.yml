@@ -10,3 +10,5 @@
   replace: "${1}doi:${2}/${3}-${4}${5}"
 - match: "(.*)https?://hdl[.]handle[.]net/10622/([A-Z0-9]+)\\s*-\\s*(\\d+)$"
   replace: "${1}https://hdl.handle.net/10622/${2}.${3}"
+- match: "^(urn:nbn:se:[^\\S]+)%20([^\\S]+)\\s*$"
+  replace: "${1}${2}"
