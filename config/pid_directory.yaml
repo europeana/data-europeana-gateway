@@ -1,7 +1,9 @@
 pid: 
   - ../public/scheme/pid/ark.rdf
+  - ../public/scheme/pid/cetaf.rdf
   - ../public/scheme/pid/doi.rdf
   - ../public/scheme/pid/handle.rdf
+  - ../public/scheme/pid/kulturarvsdata:se.rdf
   - ../public/scheme/pid/nbn:at.rdf
   - ../public/scheme/pid/nbn:ch.rdf
   - ../public/scheme/pid/nbn:cz.rdf
@@ -15,5 +17,6 @@ pid:
   - ../public/scheme/pid/nbn:si.rdf
   - ../public/scheme/pid/nbn:sk.rdf
   - ../public/scheme/pid/purl:gov.rdf
+  - ../public/scheme/pid/purl:hr.rdf
   - ../public/scheme/pid/purl:org.rdf
   - ../public/scheme/pid/purl:pt.rdf
