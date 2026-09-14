@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rdf:RDF xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
 
   <skos:ConceptScheme rdf:about="http://data.europeana.eu/vocabulary/depublicationReason/">
     <dc:title xml:lang="en">Reasons for depublication of a record from the data space</dc:title>
