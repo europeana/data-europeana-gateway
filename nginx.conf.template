@@ -70,7 +70,7 @@ http {
 
         add_header Link "<https://creativecommons.org/publicdomain/zero/1.0/>;rel=license";
 
-        # include nginx.conf.d/*.conf;
+        include nginx.conf.d/*.conf;
 
         # Used by Kubernetes health checks
         location /nginx-health {
@@ -79,30 +79,16 @@ http {
         }
 
 
-        #####################################
-        # CORS                              #
-        #####################################
-        # Add a rewrite to respond with a 200 SUCCESS on every OPTIONS request.
-        if ($request_method = 'OPTIONS') {
-            return 200;
-        }
-        add_header 'Access-Control-Allow-Origin' '*';
-        add_header 'Access-Control-Allow-Credentials' 'true';
-        add_header 'Access-Control-Allow-Methods' 'POST, GET, OPTIONS, DELETE, PUT, PATCH, HEAD';
-        add_header 'Access-Control-Max-Age' '600';
-        add_header 'Access-Control-Expose-Headers' 'Location';
-        add_header 'Access-Control-Allow-Headers' 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token';
-
-
         ########################################
         # Negotiation for PID                  #
         ########################################
 
         # static rdf files to handle PID schemes are served in $PUBLIC_FOLDER/scheme/pid/...
         location ~* ^/scheme/pid {
+            include nginx.conf.d/location-cors.conf;
             try_files $uri $uri.rdf = 404;
         }
-        
+
         ########################################
         # EDM, 3D & Tombstone Vocabulary       #
         ########################################
@@ -110,6 +96,7 @@ http {
         # Host EDM, 3D & Tombstone vocabulary in /usr/local/etc/nginx/public/vocabulary/...
 
         location ~ /vocabulary/(usageArea|modelType|role|depublicationReason) {
+            include nginx.conf.d/location-cors.conf;
             try_files $uri /vocabulary/$1.rdf = 404;
         }
 
@@ -119,6 +106,7 @@ http {
 
         # static files for Openskos requests are served in $PUBLIC_FOLDER/...
         location ~ ^/concept/loc|soundgenres {
+            include nginx.conf.d/location-cors.conf;
             try_files $uri $uri.rdf = 404;
         }
 
